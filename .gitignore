@@ -1,0 +1,26 @@
+# Main directories (Desktop/, Downloads/, etc.)
+/[A-Z]*/
+
+# Main dot directories (.bin/, .cache/, etc.)
+/.*/
+
+
+# Restore the following
+!/.ssh/config
+
+!/.zsh/.zshrc
+
+!/.config/alacritty/*
+!/.config/fonts/*
+!/.config/karabiner/*
+!/.config/nvim/*
+!/.config/python/*
+
+!/.config/utils/cached-aliases
+!/.config/utils/env
+!/.config/utils/startup
+!/.config/utils/utils
+!/.config/utils/configfiles/.config-help
+
+!/.config/flake8
+!/.config/monitors.xml

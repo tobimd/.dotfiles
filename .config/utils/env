@@ -1,0 +1,33 @@
+#!/usr/bin/zsh
+# Environment variables to export
+
+
+## === General === ##
+
+# Predetermined editor
+export EDITOR="$NEOVIM_HOME"
+
+# Flutter fetch related
+export PUB_HOSTED_URL="https://pub.flutter-io.cn"
+export FLUTTER_STORAGE_BASE_URL="https://storage.flutter-io.cn"
+
+# Do not generate history file for `less`
+export LESSHISTFILE="-"
+
+# Set location for zsh history
+export HISTFILE="$HOME/.hsts/.zsh-hst"
+
+# Set the name of dotfiles repo
+export DOTFILES_HOME="$HOME/.dotfiles"
+
+
+## === Typewritten === ##
+
+# Typewritten variables that define prompt behaviour
+export TYPEWRITTEN_PROMPT_LAYOUT="singleline_split"
+export TYPEWRITTEN_RELATIVE_PATH="adaptive"
+export TYPEWRITTEN_BRANCH_LEFT_SYMBOL="[ "
+export TYPEWRITTEN_BRANCH_RIGHT_SYMBOL=" ]"
+export TYPEWRITTEN_SQUASH_GIT_DIRECTORIES="0"
+export TYPEWRITTEN_COLORS="git_branch:light;current_directory:green;symbol:light"
+export TYPEWRITTEN_SYMBOL="$"

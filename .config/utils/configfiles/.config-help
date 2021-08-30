@@ -1,0 +1,53 @@
+usage: config COMMAND [OPTION...] [ARGS...]
+  or:  config NAME
+
+Create shortcuts for files that can later be opened using
+the NAME of the saved shortcut.
+
+ -f, --force    Ignore nonexistent files and arguments
+ -v, --verbose  Explain what is being done
+ -s, --silent   Do not prompt regardless of status
+ -h, --help     Display this help message and exit. Same as
+                using \033[1mhelp\033[0m as a command.
+ -l, --list     Output list of all shortcuts saved. Same as
+                using \033[1mlist\033[0m as a command.
+
+\033[1mADD\033[0m
+    usage: config add [OPTION...] FILE [NAME]
+
+    Create a shortcut for a file.
+
+    -x, --no-suffix  Remove suffix from FILE if no NAME is
+                     given.
+
+    If NAME is not used, then a symlink is created with
+    FILE instead (directories are not included, only the 
+    file name).
+
+\033[1mDELETE\033[0m, \033[1mREMOVE\033[0m
+    usage: config [delete|del|remove|rm] [OPTION...] NAME
+    
+    Remove an existing shortcut from the list.
+
+\033[1mEDIT\033[0m
+    usage: config edit [OPTION...] NAME NEW_NAME
+      or:  config edit [OPTION...] [-k|--link] NAME NEW_LINK
+        
+    Change some aspect of saved shortcuts.
+
+    -k, --link  Specifies for the existing shortcut, to
+                redirect to a new location
+
+examples:
+    The following two commands create the same shortcut
+    named "\033[3mfoo\033[0m" for the file "\033[3mfoo.txt\033[0m" that is located in
+    the current directory.
+        $ config add foo.txt foo
+        $ config add -x foo.txt
+
+    Change name of existing shortcut "\033[3mfoo\033[0m" to "\033[3mbar\033[0m"
+        $ config edit foo bar
+
+    Point existing "\033[3mbar\033[0m" shortcut to a new file called
+    "\033[3mbaz.txt\033[0m" inside the Desktop folder
+        $ config edit --link bar ~/Desktop/baz.txt
