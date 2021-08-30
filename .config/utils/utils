@@ -504,9 +504,30 @@ config() {
 
         # list
         elif [[ $cmd_mode == "list" || $__tb_flags[list] == "true" ]]; then
+            local max_length=50
+            local cur_length=0
+
+            typeset -a bn_files
+
             for file in "$config_files_dir"/*; do
-                if [[ $(basename $file) != $reserved ]]; then
-                    echo "    ${green}${bold}$(basename $file)${reset} -> $(readlink $file)"
+                local bn_file=$(basename $file)
+
+                if [[ $bn_file != $reserved ]]; then
+                    local len=$(expr length $bn_file)
+
+                    if (( $len > $cur_length && $len < $max_length )); then
+                        cur_length=$len
+                    fi
+
+                    bn_files+=$bn_file
+                fi
+
+            done
+
+
+            for file in $bn_files; do
+                if [[ $file != $reserved ]]; then
+                    echo "  $green$bold${(r($cur_length)( ))file}$reset -> $(readlink "$config_files_dir/$file")"
                 fi
             done
             echo ""
