@@ -165,240 +165,308 @@ config() {
     local config_files_dir="$UTILS_HOME/configfiles"
     local reserved=".config-help"
     local error_msg="none"
-    local show_help="true"
+    local cmd_mode="none"
+    local flag_order=()
 
-    typeset -A __tb_flags=(
-        [force]="false"
-        [link]="false"
-        [suffix]="true"
-        [help]="false"
-        [list]="false"
-        [verbose]="false"
-        [unkown]="false"
+    typeset -A flags=(
+        force     0
+        link      0
+        no_suffix 0
+        verbose   0
     )
 
-    __tb_info()       { echo "[ ${cyan}config${reset} ]: $@"            ;          }
-    __tb_warn()       { echo "[ ${yellow}config${reset} ]: $@"          ;          }
-    __tb_error()      { echo "[ ${red}config${reset} ]: $@"             ; echo ""; }
-    __tb_success()    { echo "[ ${green}config${reset} ]: $@"           ; echo ""; }
-    __tb_print_help() { printf "$(cat "$config_files_dir/.config-help")"; echo ""; }
+    typeset -A error_list=(
+        [AE0]="(${yellow}ArgumentError$reset) No arguments were given"
+        [AE1]="(${yellow}ArgumentError$reset) Missing argument"
+        [AE2]="(${yellow}ArgumentError$reset) Too many arguments were used"
+        [AE3]="(${yellow}ArgumentError$reset) Unknown argument or shortcut file"
+        [CE0]="(${yellow}ConfigError$reset) Shortcut doesn't exist or wasn't found"
+        [CE1]="(${yellow}ConfigError$reset) File doesn't exist or wasn't found"
+        [CE2]="(${yellow}ConfigError$reset) Can't use \"$cyan$reserved$reset\" as the shortcut's name because it's reserved"
+        [CE3]="(${yellow}ConfigError$reset) Name is already being used"
+        [FE0]="(${yellow}FlagError$reset) Unknown flag"
+        [FE1]="(${yellow}FlagError$reset) Can't use flag"
+    )
+
+    tb_info()       { echo "[ ${cyan}config${reset} ]: $@"            ;          }
+    tb_warn()       { echo "[ ${yellow}config${reset} ]: $@"          ;          }
+    tb_error()      { echo "[ ${red}config${reset} ]: $@"             ; echo ""; }
+    tb_success()    { echo "[ ${green}config${reset} ]: $@"           ; echo ""; }
+    tb_print_help() { printf "$(cat "$config_files_dir/.config-help")"; echo ""; }
 
     # Create directory if it doesn't exist yet
     if [[ ! -x "$config_files_dir" ]]; then
         mkdir -p $config_files_dir
+        echo 'usage: config COMMAND [OPTION...] [ARGS...]
+  or:  config NAME
+
+Create shortcuts for files that can later be opened using
+the NAME of the saved shortcut.
+
+ -f, --force    Ignore nonexistent files and arguments
+ -v, --verbose  Explain what is being done
+ -s, --silent   Do not prompt regardless of status
+ -h, --help     Display this help message and exit. Same as
+                using \033[1mhelp\033[0m as a command.
+ -l, --list     Output list of all shortcuts saved. Same as
+                using \033[1mlist\033[0m as a command.
+
+\033[1mADD\033[0m
+    usage: config add [OPTION...] FILE [NAME]
+
+    Create a shortcut for a file.
+
+    -x, --no-suffix  Remove suffix from FILE if no NAME is
+                     given.
+
+    If NAME is not used, then a symlink is created with
+    FILE instead (directories are not included, only the 
+    file name).
+
+\033[1mDELETE\033[0m, \033[1mREMOVE\033[0m
+    usage: config [delete|del|remove|rm] [OPTION...] NAME
+    
+    Remove an existing shortcut from the list.
+
+\033[1mEDIT\033[0m
+    usage: config edit [OPTION...] NAME NEW_NAME
+      or:  config edit [OPTION...] [-k|--link] NAME NEW_LINK
+        
+    Change some aspect of saved shortcuts.
+
+    -k, --link  Specifies for the existing shortcut, to
+                redirect to a new location
+
+examples:
+    The following two commands create the same shortcut
+    named "\033[3mfoo\033[0m" for the file "\033[3mfoo.txt\033[0m" that is located in
+    the current directory.
+        $ config add foo.txt foo
+        $ config add -x foo.txt
+
+    Change name of existing shortcut "\033[3mfoo\033[0m" to "\033[3mbar\033[0m"
+        $ config edit foo bar
+
+    Point existing "\033[3mbar\033[0m" shortcut to a new file called
+    "\033[3mbaz.txt\033[0m" inside the Desktop folder
+        $ config edit --link bar ~/Desktop/baz.txt
+
+' >> "$config_files_dir/.config-help"
     fi
     
-    local _option_used=""
     # Find and remove optional arguments
     for arg in "$@"; do
         shift
-        if [[ "$arg" == "-f" || "$arg" == "--force" ]]; then
-            __tb_flags[force]="true"
-        elif [[ "$arg" == "-k" || "$arg" == "--link" ]]; then
-            __tb_flags[link]="true"
-            _option_used="$arg"
-        elif [[ "$arg" == "-s" || "$arg" == "--no-suffix" ]]; then
-            __tb_flags[suffix]="false"
-            _option_used="$arg"
-        elif [[ "$arg" == "-l" || "$arg" == "--list" ]]; then
-            __tb_flags[list]="true"
-        elif [[ "$arg" == "-h" || "$arg" == "--help" ]]; then
-            __tb_flags[help]="true"
-        elif [[ "$arg" == "-v" || "$arg" == "--verbose" ]]; then
-            __tb_flags[verbose]="true"
-        elif [[ "${arg:0:1}" == "-" ]]; then
-            __tb_flags[unkown]="true"
-            _option_used="$arg"
-        else 
-            set -- "$@" "$arg"
+        if [[ $arg[1] == "-" ]]; then
+            # Short flag and long flag versions
+            local sf="${arg:1:#arg}"
+            local lf=""
+            if [[ $sf[1] == "-" ]]; then; lf="${sf:1:#sf}"; fi
+
+            if   [[ $lf == "remove" || $lf == "rm" || $sf == "r" ]]; then; flag_order+="r"
+            elif [[ $lf == "add"       || $sf == "a" ]]; then; flag_order+="a"
+            elif [[ $lf == "edit"      || $sf == "e" ]]; then; flag_order+="e"
+            elif [[ $lf == "help"      || $sf == "h" ]]; then; flag_order+="h"
+            elif [[ $lf == "list"      || $sf == "l" ]]; then; flag_order+="l"
+            elif [[ $lf == "force"     || $sf == "f" ]]; then; flags[force]=1; flag_order+="f"
+            elif [[ $lf == "link"      || $sf == "k" ]]; then; flags[link]=1;  flag_order+="k"
+            elif [[ $lf == "no-suffix" || $sf == "x" ]]; then; flags[no_suffix]=1; flag_order+="x"
+            elif [[ $lf == "verbose"   || $sf == "v" ]]; then; flags[verbose]=1;   flag_order+="v"
+            else
+                # Check if it's a joint group of flags
+                
+                if [[ $lf == "" ]]; then
+                    sep_flags=(`echo $sf | grep -o . `)
+                    for _f in "${sep_flags[@]}"; do
+                        if   [[ $_f == "r" ]]; then; flag_order+="r"
+                        elif [[ $_f == "a" ]]; then; flag_order+="a"
+                        elif [[ $_f == "e" ]]; then; flag_order+="e"
+                        elif [[ $_f == "h" ]]; then; flag_order+="h"
+                        elif [[ $_f == "l" ]]; then; flag_order+="l"
+                        elif [[ $_f == "f" ]]; then; flags[force]=1; flag_order+="f"
+                        elif [[ $_f == "k" ]]; then; flags[link]=1;  flag_order+="k"
+                        elif [[ $_f == "x" ]]; then; flags[no_suffix]=1; flag_order+="x"
+                        elif [[ $_f == "v" ]]; then; flags[verbose]=1;   flag_order+="v"
+                        else
+                            tb_error $error_list[FE0] "\"$cyan$arg$reset\""
+                            return 3
+                        fi
+                    done
+                else
+                    tb_error $error_list[FE0] "\"$cyan$arg$reset\""
+                    return 3
+                fi
+            fi
+
+        else
+            set -- "$@" $arg
         fi
     done
 
-    # Check which command was used
-    if [[ ! -z "$1" || $__tb_flags[help] == "true" || $__tb_flags[list] == "true" ]]; then
 
-        local cmd_mode="$1"
+    if [[ "${#flag_order}" != "0" ]]; then
+        for _f in "${flag_order[@]}"; do
+            if   [[ $_f == "a" ]]; then; cmd_mode="add"; break
+            elif [[ $_f == "e" ]]; then; cmd_mode="edit"; break
+            elif [[ $_f == "r" ]]; then; cmd_mode="remove"; break
+            elif [[ $_f == "h" ]]; then; cmd_mode="help"; break
+            elif [[ $_f == "l" ]]; then; cmd_mode="list"; break
+            fi
+        done
+    fi
 
-        if (( $# > 1 )); then
-            shift
+    # Check if there are any arguments at all
+    if [[ ! -z "$1" || $cmd_mode != "none" ]]; then
+
+        if [[ $cmd_mode == "none" ]]; then
+            cmd_mode=$1; shift
         fi
-    
-        # Check correct flag usage
-        if [[ ($__tb_flags[suffix] == "false" && $cmd_mode != "add") || ($__tb_flags[link] == "true" && $cmd_mode != "edit") || ($__tb_flags[unkown] == "true") ]]; then
-            __tb_error "Unknown option $yellow$_option_used$reset."
-            __tb_print_help
-            return 1
-        fi
 
-        # add [-f | --force] <file> <name>
+        # ADD COMMAND =========================================================
         if [[ "$cmd_mode" == "add" ]]; then
-            
-            # Check for argument errors
-            # - No file argument was given
+
+            # ERROR CHECKS
+            # *** No file argument was given
             if [[ -z "$1" ]]; then
-                if [[ $__tb_flags[force] == "false" ]]; then
-                    __tb_error "Missing ${cyan}file${reset} argument."
-                    __tb_print_help
+                if (( $flags[force] == 0 )); then
+                    tb_error $error_list[AE1] "\"${cyan}file$reset\""
+                    tb_print_help
+                    return 1
                 fi
 
-                return 1
+                return 0
             fi
             
             local file="$(realpath -m $1)"
             local name="$2"
             local bn_file="$(basename $file)"
-            local can_run_command="true"
 
-            # - File doesn't exist
+            # *** File doesn't exist
             if [[ ! -f $file ]]; then
-                if [[ $__tb_flags[force] == "false" ]]; then
-                    error_msg="File \"${cyan}$file${reset}\" does not exist."
-                    show_help="false"
-                else
-                    can_run_command="false"
-
-                    if [[ $__tb_flags[verbose] == "true" ]]; then
-                        __tb_warn "File \"${cyan}$file${reset}\" does not exist. No shortcut will be created."
-                    fi
+                if (( $flags[force] == 0 )); then
+                    tb_error $error_list[CE1] "\"$cyan$file$reset\""
+                    return 2
                 fi
 
-            # - File name is reserved
+                if (( $flags[verbose] == 1 )); then
+                    tb_warn $error_list[CE1] "\"$cyan$file$reset\""
+                fi
+                return 0
+
+            # *** File name is reserved
             elif [[ $name == $reserved || ($bn_file == $reserved && -z $name) ]]; then
-                if [[ $__tb_flags[force] == "false" ]]; then
-                    error_msg="The name \"${cyan}$reserved${reset}\" is reserved, please use a different one."
-                    show_help="false"
-                else
-                    can_run_command="false"
-
-                    if [[ $__tb_flags[verbose] == "true" ]]; then
-                        __tb_warn "Cannot use \"$cyan$name$reset\" because it's reserved. No shortcut will be created."
-                    fi
+                if (( $flags[force] == 0 )); then
+                    tb_error $error_list[CE2][1]
+                    return 2
                 fi
 
-            # - More arguments than needed were used
+                if (( $flags[verbose] == 1 )); then
+                    tb_warn $error_list[CE2][1]
+                fi
+                return 0
+
+            # *** More arguments than needed were used
             elif [[ ! -z "$3" ]]; then
-                if [[ $__tb_flags[force] == "false" ]]; then
-                    error_msg="Too many arguments."
-                else
-                    can_run_command="false"
-                    if [[ $__tb_flags[verbose] == "true" ]]; then
-                        __tb_warn "Too many arguments were used. No shortcut will be created."
-                    fi
-                fi
-                
-            # - Symlink already exists in config directory, and no name was given (not using force)
-            elif [[ -h "$config_files_dir/${file:t}" && -z $name ]]; then
-                if [[ $__tb_flags[force] == "false" ]]; then
-                    error_msg="\"${cyan}$bn_file${reset}\" already exists in $config_files_dir. "
-                    error_msg+="Please use the ${cyan}name${reset} argument to choose another file name."
-                    show_help="false"
-                else
-                    can_run_command="false"
-                    if [[ $__tb_flags[verbose] == "true" ]]; then
-                        __tb_warn "A file named \"$cyan$bn_file$reset\" already exists. No shortcut will be created."
-                    fi
+                if (( $flags[force] == 0 )); then
+                    tb_error $error_list[AE2][1]
+                    tb_print_help
+                    return 1
                 fi
 
-            # - name is used as well as no-suffix
-            elif [[ ! -z $name && $__tb_flags[suffix] == "false" ]]; then
-                if [[ $__tb_flags[force] == "false" ]]; then
-                    error_msg="${yellow}--no-suffix${reset} flag (or ${yellow}-s${reset}) cannot be used "
-                    error_msg+="when the ${cyan}name${reset} argument is used."
-                else
-                    can_run_command="false"
-                    if [[ $__tb_flags[verbose] == "true" ]]; then
-                        __tb_warn "Cannot remove suffix for file, when a custom name was given. No shortcut will be created."
-                    fi
+                if (( $flags[verbose] == 1 )); then
+                    tb_warn $error_list[AE2][1]
                 fi
+                return 0
+                
+            # *** Symlink already exists in config directory, and no name was given (not using force)
+            elif [[ -h "$config_files_dir/${file:t}" && -z $name ]]; then
+                if (( $flags[force] == 0 )); then
+                    tb_error $error_list[CE3] "\"$cyan${file:t}$reset\""
+                    return 2
+                fi
+
+                if (( $flags[verbose] == 1 )); then
+                    tb_warn $error_list[CE3][1]
+                fi
+                return 0
+
+            # *** name is used as well as no-suffix
+            elif [[ ! -z $name && "$flags[no_suffix]" == "1" ]]; then
+                if (( $flags[force] == 0 )); then
+                    tb_error $error_list[FE1] "$yellow--no-suffix$reset when argument ${cyan}name$reset is used (\"$cyan$name$reset\")"
+                    tb_print_help
+                    return 3
+                fi
+
+                if (( $flags[verbose] == 1 )); then
+                    tb_warn $error_list[FE1] "$yellow--no-suffix$reset when argument ${cyan}name$reset is used (\"$cyan$name$reset\")"
+                fi
+                return 0
                 
             fi
-            
-            # If errors where generated, then print and exit.
-            if [[ $error_msg != "none" ]]; then
-                __tb_error $error_msg
-                if [[ $show_help == "true" ]]; then
-                    __tb_print_help
-                fi
-                return 1
-            fi            
             
             local link_name=$bn_file
 
             # Symlink <file> normally and rename later if necessary
-            if [[ $can_run_command == "true" ]]; then
-
-                # If no name is given and no-suffix is used, then link name will be the file without suffix
-                if [[ -z $name && $__tb_flags[suffix] == "false" ]]; then
-                    link_name=${link_name%.*}
-                elif [[ ! -z $name ]]; then
-                    link_name=$name
-                fi
-
-                ln -s $file "$config_files_dir/$link_name"
-                if [[ $__tb_flags[verbose] == "true" ]]; then
-                    __tb_info "Created symlink for $cyan$file$reset called $cyan$link_name$reset."
-                fi
-            
-                __tb_success "Successfully created config file \"${cyan}$link_name${reset}\" for $file."
+            # If no name is given and no-suffix is used, then link name will be the file without suffix
+            if [[ -z $name && "$flags[no_suffix]" == "1" ]]; then
+                link_name=${link_name%.*}
+            elif [[ ! -z $name ]]; then
+                link_name=$name
             fi
-            
+
+            ln -s $file "$config_files_dir/$link_name"
+            if (( $flags[verbose] == 1 )); then
+                tb_info "Created symlink for $cyan$file$reset called $cyan$link_name$reset."
+            fi
+        
+            if (( $flags[force] == 0 )); then
+                tb_success "Successfully created config file \"$cyan$link_name$reset\" for $file."
+            fi
             return 0
             
            
-        # remove [-f|--force ] <name>
-        elif [[ "$cmd_mode" == "rm" || "$cmd_mode" == "remove" || "$cmd_mode" == "del" || "$cmd_mode" == "delete" ]]; then
+        # REMOVE COMMAND =======================================================
+        elif [[ "$cmd_mode" == "rm" || "$cmd_mode" == "remove" ]]; then
             
             local name="$1"
             local file="$config_files_dir/$name"          
-            local can_run_command="true"
             
-            # Check for argument errors
-            # - Symlink <name> does not exist (and not using force)
+            # ERROR CHECKS
+            # *** Symlink <name> does not exist (and not using force)
             if [[ ! -f $file ]]; then
-                if [[ $__tb_flags[force] == "false" ]]; then
-                    error_msg="No config file named ${cyan}$name${reset} exists."
-                    show_help="false"
-                else
-                    can_run_command="false"
-
-                    if [[ $__tb_flags[verbose] == "true" ]]; then
-                        __tb_warn "File \"${cyan}$file${reset}\" does not exist. No shortcut will be removed."
-                    fi
+                if (( $flags[force] == 0 )); then
+                    tb_error $error_list[CE1] "\"$cyan$file$reset\""
+                    return 2
                 fi
-            
-            # - More arguments than needed were used
+
+                if (( $flags[verbose] == 1 )); then
+                    tb_warn $error_list[CE1] "\"$cyan$file$reset\""
+                fi
+                return 0
+
+            # *** More arguments than needed were used
             elif [[ ! -z "$2" ]]; then
-                if [[ $__tb_flags[force] == "false" ]]; then
-                    error_msg="Too many arguments."
-                else
-                    can_run_command="false"
-
-                    if [[ $__tb_flags[verbose] == "true" ]]; then
-                        __tb_warn "Too many arguments were used. No shortcut will be removed."
-                    fi
+                if (( $flags[force] == 0 )); then
+                    tb_error $error_list[AE2][1]
+                    tb_print_help
+                    return 1
                 fi
 
-            fi
-            
-            # If errors where generated, then print and exit.
-            if [[ $error_msg != "none" ]]; then
-                __tb_error $error_msg
-                if [[ $show_help == "true" ]]; then
-                    __tb_print_help
+                if (( $flags[verbose] == 1 )); then
+                    tb_warn $error_list[AE2][1]
                 fi
-                return 1
+                return 0
             fi
             
-            # Remove file if possible
-            if [[ $can_run_command == "true" ]]; then
-                rm $file
-                __tb_success "Successfully removed config \"${cyan}$name${reset}\"."
-            fi
+            rm $file
             
+            if (( $flags[force] == 0 )); then
+                tb_success "Successfully removed config \"${cyan}$name${reset}\"."
+            fi
             return 0
 
-        # edit [-f|--force] <old name> <new name>
-        # edit [-f|--force] --link <name> <new file>
+        # EDIT COMMAND ========================================================
         elif [[ "$cmd_mode" == "edit" ]]; then
 
             local old_name="$1"
@@ -407,109 +475,93 @@ config() {
             local old_file="$config_files_dir/$old_name"
             local new_file="$config_files_dir/$new_name"
 
-            local can_run_command="true"
-            
-            if [[ $__tb_flags[link] == "true" ]]; then
+            if (( $flags[link] == 1 )); then
                 new_file="$(realpath -m $new_name)"
             fi            
             
-            # Check for argument errors
-            # - Symlink <name> does not exist
+            # ERROR CHECKS
+            # *** Symlink <name> does not exist (and not using force)
             if [[ ! -f $old_file ]]; then
-                if [[ $__tb_flags[force] == "false" ]]; then
-                    error_msg="No config file named ${cyan}$old_file${reset} exists."
-                    show_help="false"
-                else
-                    can_run_command="false"
-
-                    if [[ $__tb_flags[verbose] == "true" ]]; then
-                        __tb_warn "File \"${cyan}$file${reset}\" does not exist. Not removing any shortcut."
-                    fi
+                if (( $flags[force] == 0 )); then
+                    tb_error $error_list[CE1] "\"$cyan$old_file$reset\""
+                    return 2
                 fi
+
+                if (( $flags[verbose] == 1 )); then
+                    tb_warn $error_list[CE1] "\"$cyan$old_file$reset\""
+                fi
+                return 0
+
             
-            # - Using --link, but <new file> does not exist
-            elif [[ ! -f $new_file && $__tb_flags[link] == "true" ]]; then
-                if [[ $__tb_flags[force] == "false" ]]; then
-                    error_msg="File ${cyan}$new_file${reset} does not exist."
-                    show_help="false"
-                else
-                    can_run_command="false"
+            # *** Using --link, but <new file> does not exist
+            elif [[ ! -f $new_file && "$flags[link]" == "1" ]]; then
+                if (( $flags[force] == 0 )); then
+                    tb_error $error_list[CE1] "\"$cyan$new_file$reset\""
+                    return 2
                 fi
+                return 0
             
-            # - File name is reserved
-            elif [[ $new_name == $reserved && $__tb_flags[link] == "false" ]]; then
-                if [[ $__tb_flags[force] == "false" ]]; then
-                    error_msg="The name ${cyan}$reserved${reset} is reserved, please use a different name."
-                    show_help="false"
-                else
-                    can_run_command="false"
-
-                    if [[ $__tb_flags[verbose] == "true" ]]; then
-                        __tb_warn "Cannot change the name to \"$cyan$reserved$reset\" because it's reserved. No shortcut will be edited."
-                    fi
+            # *** File name is reserved
+            elif [[ $name == $reserved || ($bn_file == $reserved && -z $name) ]]; then
+                if (( $flags[force] == 0 )); then
+                    tb_error $error_list[CE2][1]
+                    return 2
                 fi
 
-            # - More arguments than needed were used
+                if (( $flags[verbose] == 1 )); then
+                    tb_warn $error_list[CE2][1]
+                fi
+                return 0
+
+            # *** More arguments than needed were used
             elif [[ ! -z "$3" ]]; then
-                if [[ $__tb_flags[force] == "false" ]]; then
-                    error_msg="Too many arguments."
-                else
-                    can_run_command="false"
-
-                    if [[ $__tb_flags[verbose] == "true" ]]; then
-                        __tb_warn "Too many arguments were used. No shortcut will be edited."
-                    fi
+                if (( $flags[force] == 0 )); then
+                    tb_error $error_list[AE2][1]
+                    tb_print_help
+                    return 1
                 fi
-            fi
-            
-            # If errors where generated, then print and exit.
-            if [[ $error_msg != "none" ]]; then
-                __tb_error $error_msg
-                if [[ $show_help == "true" ]]; then
-                    __tb_print_help
+
+                if (( $flags[verbose] == 1 )); then
+                    tb_warn $error_list[AE2][1]
                 fi
-                return 1
-            fi
-            
-            if [[ $can_run_command == "true" ]]; then
-            
-                # If using edit command for changing name of config file
-                if [[ $__tb_flags[link] == "false" ]]; then
-                    mv "$old_file" "$new_file"
-
-                    local tmp_msg="Successfully renamed config \"${cyan}$old_name${reset}\" "
-                    tmp_msg+="to \"${cyan}$new_name${reset}\"."
-
-                    __tb_success $tmp_msg
-                    
-                # If using edit command for redirecting existing config file to new location
-                else
-                    rm "$old_file"
-                    ln -s "$new_file" "$old_file"
-
-                    local tmp_msg="Successfully redirected config \"${cyan}$old_name${reset}\" "
-                    tmp_msg+="to point to \"${cyan}$new_file${reset}\"."
-
-                    __tb_success $tmp_msg
+                return 0
                 
-                fi
+            fi
+            
+            # If using edit command for changing name of config file
+            if [[ $flags[link] == "false" ]]; then
+                mv "$old_file" "$new_file"
+
+                local tmp_msg="Successfully renamed config \"${cyan}$old_name${reset}\" "
+                tmp_msg+="to \"${cyan}$new_name${reset}\"."
+                
+            # If using edit command for redirecting existing config file to new location
+            else
+                rm "$old_file"
+                ln -s "$new_file" "$old_file"
+
+                local tmp_msg="Successfully redirected config \"${cyan}$old_name${reset}\" "
+                tmp_msg+="to point to \"${cyan}$new_file${reset}\"."
             fi
 
+            if (( $flags[force] == 0 )); then
+                tb_success $tmp_msg
+            fi
             return 0
 
-        # help
-        elif [[ $cmd_mode == "help" || $__tb_flags[help] == "true" ]]; then
-            __tb_print_help
+        # HELP COMMAND ========================================================
+        elif [[ $cmd_mode == "help" ]]; then
+            tb_print_help
             return 0
 
-        # list
-        elif [[ $cmd_mode == "list" || $__tb_flags[list] == "true" ]]; then
+        # LIST COMMAND ========================================================
+        elif [[ $cmd_mode == "list" ]]; then
             local max_length=50
             local cur_length=0
 
             typeset -a bn_files
 
-            for file in "$config_files_dir"/*; do
+            for file in "$config_files_dir"/*(N); do
                 local bn_file=$(basename $file)
 
                 if [[ $bn_file != $reserved ]]; then
@@ -533,7 +585,7 @@ config() {
             echo ""
             return 0
 
-        # trying to open a config file
+        # TRY OPENING CONFIG FILE =============================================
         else
             local name=$cmd_mode
             local file="$config_files_dir/$name"
@@ -543,29 +595,28 @@ config() {
                 return 0
 
             else
-                if [[ $__tb_flags[force] == "false" ]]; then
-                    __tb_error "No config file or option called: \"${cyan}$name${reset}\""
-                    __tb_print_help
+                if (( $flags[force] == 0 )); then
+                    tb_error $error_list[AE3] "\"$cyan$file$reset\""
+                    tb_print_help
                     return 1
-                else
-                    if [[ $__tb_flags[verbose] == "true" ]]; then
-                        __tb_warn "Could not open file or use option: \"$cyan$name$reset\". Exiting."
-                    fi
-                    return 0
                 fi
+
+                if (( $flags[verbose] == 1 )); then
+                    tb_warn $error_list[AE3] "\"$cyan$file$reset\""
+                fi
+                return 0
             fi
         fi
     else 
-        if [[ $__tb_flags[force] == "false" ]]; then
-            __tb_error "Missing arguments."
-            __tb_print_help
+        if (( $flags[force] == 0 )); then
+            tb_error $error_list[AE0] "\"$cyan$file$reset\""
+            tb_print_help
             return 1
-        else
-            if [[ $__tb_flags[verbose] == "true" ]]; then
-                __tb_warn "Missing arguments. Exiting."
-            fi
-            return 0
         fi
+
+        if (( $flags[verbose] == 1 )); then
+            tb_warn $error_list[AE0] "\"$cyan$file$reset\""
+        fi
+        return 0
     fi
 }
-

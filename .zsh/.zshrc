@@ -50,3 +50,4 @@ alias venv-stop="deactivate"  # to start: venv-init
 alias glsa="gitaliases"
 alias glst="git ls-tree --full-tree --name-only -r HEAD"
 
+fpath=($fpath "/home/tobi/.zsh/.zfunctions")
