@@ -195,7 +195,7 @@ config() {
     tb_print_help() { printf "$(cat "$config_files_dir/.config-help")"; echo ""; }
 
     # Create directory if it doesn't exist yet
-    if [[ ! -x "$config_files_dir" ]]; then
+    if [[ ! -x "$config_files_dir" || ! -f "$config_files_dir/$reserved" ]]; then
         mkdir -p $config_files_dir
         echo 'usage: config COMMAND [OPTION...] [ARGS...]
   or:  config NAME
@@ -203,15 +203,14 @@ config() {
 Create shortcuts for files that can later be opened using
 the NAME of the saved shortcut.
 
- -f, --force    Ignore nonexistent files and arguments
+ -f, --force    Do not prompt
  -v, --verbose  Explain what is being done
- -s, --silent   Do not prompt regardless of status
  -h, --help     Display this help message and exit. Same as
                 using \033[1mhelp\033[0m as a command.
  -l, --list     Output list of all shortcuts saved. Same as
                 using \033[1mlist\033[0m as a command.
 
-\033[1mADD\033[0m
+\033[1madd\033[0m, \033[1m-a\033[0m, \033[1m--add\033[0m
     usage: config add [OPTION...] FILE [NAME]
 
     Create a shortcut for a file.
@@ -223,12 +222,12 @@ the NAME of the saved shortcut.
     FILE instead (directories are not included, only the 
     file name).
 
-\033[1mDELETE\033[0m, \033[1mREMOVE\033[0m
-    usage: config [delete|del|remove|rm] [OPTION...] NAME
+\033[1mremove\033[0m, \033[1mrm\033[0m, \033[1m-r\033[0m, \033[1m--remove\033[0m
+    usage: config remove [OPTION...] NAME
     
     Remove an existing shortcut from the list.
 
-\033[1mEDIT\033[0m
+\033[1medit\033[0m, \033[1m-e\033[0m, \033[1m--edit\033[0m
     usage: config edit [OPTION...] NAME NEW_NAME
       or:  config edit [OPTION...] [-k|--link] NAME NEW_LINK
         
@@ -237,7 +236,7 @@ the NAME of the saved shortcut.
     -k, --link  Specifies for the existing shortcut, to
                 redirect to a new location
 
-examples:
+\033[1m\033[3mexamples\033[0m:
     The following two commands create the same shortcut
     named "\033[3mfoo\033[0m" for the file "\033[3mfoo.txt\033[0m" that is located in
     the current directory.

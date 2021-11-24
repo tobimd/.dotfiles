@@ -8,11 +8,15 @@
 	name = tobimd
 	email = 33004093+tobimd@users.noreply.github.com
 
-[includeIf "gitdir:/home/tobi/Develop/socialweb/"]
-	path = /home/tobi/Develop/socialweb/.gitconfig
-
 [alias]
 	logline = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
 
 [pager]
 	branch = false
+
+[includeIf "gitdir:/home/tobi/Develop/usm/"]
+	path = /home/tobi/Develop/usm/.gitconfig
+
+[includeIf "gitdir:/home/tobi/Develop/socialweb/"]
+	path = /home/tobi/Develop/socialweb/.gitconfig
+

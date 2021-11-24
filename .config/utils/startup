@@ -23,6 +23,7 @@ NEOVIM_HOME="/usr/bin/nvim"
 
 if [[ "$OSTYPE" == "linux-gnu"* ]];then
     # BEGIN LINUX ENVIRONMENT VARIABLES
+    PATH="$PATH:$HOME/go/bin"
     # END LINUX ENVIRONMENT VARIABLES
 
     if [[ "$PWM" == "xmonad" ]]; then
