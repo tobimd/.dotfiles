@@ -49,6 +49,7 @@ elif [[ "$OSTYPE" == "darwin"* ]]; then
     JAVA_HOME="/Library/Java/JavaVirtualMachines/jdk-16.0.1.jdk/Contents/Home"
     PYTHON_HOME="/Library/Frameworks/Python.framework/Versions/3.9/bin"
     NEOVIM_HOME="/usr/local/bin/nvim"
+    GIT_HOME="/usr/bin/git"
     # END MAC ENVIRONMENT VARIABLES
 
     PATH="$PATH:$HOME/.pub-cache/bin"
