@@ -16,7 +16,6 @@ call plug#begin('~/.vim/plugged')
     Plug 'psliwka/vim-smoothie'                              " Smooth scrolling
     
 "{{ File management }}
-    Plug 'vifm/vifm.vim'                                     " Vifm
     Plug 'scrooloose/nerdtree'                               " Nerdtree
     Plug 'tiagofumo/vim-nerdtree-syntax-highlight'           " Highlightin Nerdtree
     Plug 'ryanoasis/vim-devicons'                            " Icons for Nerdtree
@@ -255,15 +254,6 @@ highlight CursorLineNr     guifg=#202328 ctermfg=7    guifg=#ea9444 ctermbg=8   
 " highlight xmlEndTag        ctermfg=114     ctermbg=none    cterm=none
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Vifm
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-map <Leader>vv :Vifm<CR>
-map <Leader>vs :VsplitVifm<CR>
-map <Leader>sp :SplitVifm<CR>
-map <Leader>dv :DiffVifm<CR>
-map <Leader>tv :TabVifm<CR>
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => VimWiki
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:vimwiki_list = [{'path': '~/vimwiki/',
@@ -305,12 +295,42 @@ nnoremap <nowait> <C-a>j :exe "resize " . (winheight(0) * 9/10)<CR>
 nnoremap <nowait> <C-a>k :exe "resize " . (winheight(0) * 10/9)<CR>
 nnoremap <nowait> <C-a>l :exe "vertical resize " . (winwidth(0) * 10/9)<CR>
 
+" Removes pipes | that act as seperators on splits
+set fillchars+=vert:\ 
+
+" Create the split windows
+map <Leader>sh :split<CR>
+map <Leader>sv :vsplit<CR>
+
+" Switch window mappings /*{{{*/
+nnoremap <A-Up> :normal <c-r>=SwitchWindow('+')<CR><CR>
+nnoremap <A-Down> :normal <c-r>=SwitchWindow('-')<CR><CR>
+nnoremap <A-Left> :normal <c-r>=SwitchWindow('<')<CR><CR>
+nnoremap <A-Right> :normal <c-r>=SwitchWindow('>')<CR><CR>
+
+function! SwitchWindow(dir)
+  let this = winnr()
+  if '+' == a:dir
+    execute "normal \<c-w>k"
+    elseif '-' == a:dir
+    execute "normal \<c-w>j"
+    elseif '>' == a:dir
+    execute "normal \<c-w>l"
+    elseif '<' == a:dir
+    execute "normal \<c-w>h"
+  else
+    echo "oops. check your ~/.vimrc"
+    return ""
+  endif
+endfunction
+" /*}}}*/
+
+:imap <C-w> <C-o><C-w>
+
+
 " Change 2 split windows from vert to horiz or horiz to vert
 map <Leader>th <C-w>t<C-w>H
 map <Leader>tk <C-w>t<C-w>K
-
-" Removes pipes | that act as seperators on splits
-set fillchars+=vert:\ 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Other Stuff

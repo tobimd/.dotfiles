@@ -35,7 +35,6 @@ alias lo="$LS_HOME -FX --color=always --group-directories-first --si"
 alias zsource="source $ZDOTDIR/.zshrc"
 alias vim="$NEOVIM_HOME"
 alias wget="wget --hsts-file=$HOME/.hsts/.wget-hsts"
-alias now="date +'%A %d/%m/%y - %T'"
 alias today="date +'%A %d/%m/%y - %T'"
 
 # Python aliases
@@ -47,7 +46,17 @@ alias venv-create="py -m venv"
 alias venv-stop="deactivate"  # to start: venv-init
 
 # Git aliases
-alias glsa="gitaliases"
 alias glst="git ls-tree --full-tree --name-only -r HEAD"
+
+# Flutter aliases
+alias flutter="fvm flutter"
+alias dart="fvm dart"
+alias fvmpg="fvm flutter pub get"
+alias fvmpa="fvm flutter pub add"
+alias fvmd="fvm flutter doctor"
+alias fvmr="fvm flutter run"
+alias fvmrv="fvm flutter run --verbose"
+alias fvmu="fvm use"
+alias fvml="fvm list"
 
 fpath=($fpath "/home/tobi/.zsh/.zfunctions")
