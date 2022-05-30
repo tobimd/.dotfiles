@@ -1,8 +1,6 @@
 source $HOME/.config/utils/startup
 source $HOME/.config/utils/env
 
-export ZSH="$ZDOTDIR/.oh-my-zsh"
-
 ZSH_THEME=""
 
 # Use case-sensitive completion [false]

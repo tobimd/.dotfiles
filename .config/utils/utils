@@ -20,6 +20,7 @@ nvim() {
 }
 
 prompt-mode() {
+    env_file="$HOME/.config/utils/env"
     autoload -U colors && colors
 
     typeset -A prompts=(
@@ -45,14 +46,10 @@ prompt-mode() {
         if [[ "$match" != "" ]]; then
             str_repl="s/TYPEWRITTEN_PROMPT_LAYOUT=.+/TYPEWRITTEN_PROMPT_LAYOUT=\"$match\"/"
 
-            if [[ "$OSTYPE" == "darwin"* ]]; then
-                gsed -i -r "$str_repl" $ZSHRC_ENV
-            elif [[ "$OSTYPE" == "linux-gnu"* ]]; then
-                sed -i -r "$str_repl" $ZSHRC_ENV
-            fi
+            sed -i ".bak" -r "$str_repl" $env_file
 
             echo "Changing prompt mode to \"$fg_bold[blue]$match$fg_no_bold[default]\".\n"
-            source $ZSHRC_HOME
+            source $env_file
 
         else
             echo "Could not resolve prompt mode: \"$mode\"."

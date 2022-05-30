@@ -3,6 +3,8 @@
 
 
 ## === General === ##
+export ZSH="$ZDOTDIR/.oh-my-zsh"
+export ZSHRC_HOME="$ZDOTDIR/.zshrc"
 
 # Predetermined editor
 export EDITOR="$NEOVIM_HOME"
