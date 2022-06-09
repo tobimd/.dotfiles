@@ -158,6 +158,20 @@ config() {
         verbose   0
     )
 
+    typeset -a options=(
+        "add -a --add"
+        "edit -e --edit"
+        "remove -r --remove"
+        "help -h --help"
+        "list -l --list"
+        "force -f --force"
+        "link -k --link"
+        "no_suffix -x --no-suffix"
+        "verbose -v --verbose"
+    )
+
+    typeset -a commands=("add" "a" "edit" "e" "remove" "rm" "r" "help" "h" "list" "l")
+
     typeset -A error_list=(
         [AE0]="(${yellow}ArgumentError$reset) No arguments were given"
         [AE1]="(${yellow}ArgumentError$reset) Missing argument"
@@ -206,7 +220,7 @@ the NAME of the saved shortcut.
     file name).
 
 \033[1mremove\033[0m, \033[1mrm\033[0m, \033[1m-r\033[0m, \033[1m--remove\033[0m
-    usage: config remove [OPTION...] NAME
+    usage: config remove [OPTION...] NAME [NAME...]
     
     Remove an existing shortcut from the list.
 
@@ -236,66 +250,67 @@ the NAME of the saved shortcut.
 ' >> "$config_files_dir/.config-help"
     fi
     
-    # Find and remove optional arguments
-    for arg in "$@"; do
-        shift
-        if [[ $arg[1] == "-" ]]; then
-            # Short flag and long flag versions
-            local sf="${arg:1:#arg}"
-            local lf=""
-            if [[ $sf[1] == "-" ]]; then; lf="${sf:1:#sf}"; fi
+    # First iteration over $@ to fix flag mix ("-abc")
+    local final_args=()
 
-            if   [[ $lf == "remove" || $lf == "rm" || $sf == "r" ]]; then; flag_order+="r"
-            elif [[ $lf == "add"       || $sf == "a" ]]; then; flag_order+="a"
-            elif [[ $lf == "edit"      || $sf == "e" ]]; then; flag_order+="e"
-            elif [[ $lf == "help"      || $sf == "h" ]]; then; flag_order+="h"
-            elif [[ $lf == "list"      || $sf == "l" ]]; then; flag_order+="l"
-            elif [[ $lf == "force"     || $sf == "f" ]]; then; flags[force]=1; flag_order+="f"
-            elif [[ $lf == "link"      || $sf == "k" ]]; then; flags[link]=1;  flag_order+="k"
-            elif [[ $lf == "no-suffix" || $sf == "x" ]]; then; flags[no_suffix]=1; flag_order+="x"
-            elif [[ $lf == "verbose"   || $sf == "v" ]]; then; flags[verbose]=1;   flag_order+="v"
-            else
-                # Check if it's a joint group of flags
-                
-                if [[ $lf == "" ]]; then
-                    sep_flags=(`echo $sf | grep -o . `)
-                    for _f in "${sep_flags[@]}"; do
-                        if   [[ $_f == "r" ]]; then; flag_order+="r"
-                        elif [[ $_f == "a" ]]; then; flag_order+="a"
-                        elif [[ $_f == "e" ]]; then; flag_order+="e"
-                        elif [[ $_f == "h" ]]; then; flag_order+="h"
-                        elif [[ $_f == "l" ]]; then; flag_order+="l"
-                        elif [[ $_f == "f" ]]; then; flags[force]=1; flag_order+="f"
-                        elif [[ $_f == "k" ]]; then; flags[link]=1;  flag_order+="k"
-                        elif [[ $_f == "x" ]]; then; flags[no_suffix]=1; flag_order+="x"
-                        elif [[ $_f == "v" ]]; then; flags[verbose]=1;   flag_order+="v"
-                        else
-                            tb_error $error_list[FE0] "\"$cyan$arg$reset\""
-                            return 3
-                        fi
-                    done
-                else
-                    tb_error $error_list[FE0] "\"$cyan$arg$reset\""
-                    return 3
+    for arg in "$@"; do
+
+        # Check if argument is mixing more than one flag in the
+        # format "-abc" instead of "-a -b- c"
+        if [[ $arg[1] == "-" && $arg[2] != "-" && ${#arg} -ge 3 ]]; then
+
+            # Recreate $@ variable by populating the beggining
+            # with the mix of flags into their own arguments.
+            # e.g. "-abc" -> "-a -b -c"
+            
+            for _f in "${(s::)arg[2,-1]}"; do
+                final_args+="-$_f"
+            done
+
+        else
+            final_args+=$arg
+        fi
+    done
+
+    if [[ ${commands[(ie)$final_args[1]]} -le ${#commands} ]]; then
+        cmd_mode=$final_args[1]
+    fi
+
+    # Remove all arguments to start fresh
+    shift "${#@}"
+
+    # Find and remove optional arguments
+    for arg in "${final_args[@]}"; do
+
+        # Capture a normal flag
+        if [[ $arg[1] == "-" ]]; then
+            _found="false"
+            
+            for opt in "${options[@]}"; do
+                values=(${(s: :)opt})
+
+                if [[ ${values[(ie)$arg]} -le ${#values} ]]; then
+                    flags[$values[1]]=1
+                    _found="true"
+
+                    if [[ $cmd_mode == "none" && ${commands[(ie)$values[1]]} -le ${#commands} ]]; then
+                        cmd_mode=$values[1]
+                    fi
+
+                    break
                 fi
+            done
+
+            if [[ $_found == "false" ]]; then
+                tb_error $error_list[FE0] "\"$cyan$arg$reset\""
+                return 3
             fi
 
         else
             set -- "$@" $arg
         fi
+
     done
-
-
-    if [[ "${#flag_order}" != "0" ]]; then
-        for _f in "${flag_order[@]}"; do
-            if   [[ $_f == "a" ]]; then; cmd_mode="add"; break
-            elif [[ $_f == "e" ]]; then; cmd_mode="edit"; break
-            elif [[ $_f == "r" ]]; then; cmd_mode="remove"; break
-            elif [[ $_f == "h" ]]; then; cmd_mode="help"; break
-            elif [[ $_f == "l" ]]; then; cmd_mode="list"; break
-            fi
-        done
-    fi
 
     # Check if there are any arguments at all
     if [[ ! -z "$1" || $cmd_mode != "none" ]]; then
@@ -338,25 +353,25 @@ the NAME of the saved shortcut.
             # *** File name is reserved
             elif [[ $name == $reserved || ($bn_file == $reserved && -z $name) ]]; then
                 if (( $flags[force] == 0 )); then
-                    tb_error $error_list[CE2][1]
+                    tb_error $error_list[CE2]
                     return 2
                 fi
 
                 if (( $flags[verbose] == 1 )); then
-                    tb_warn $error_list[CE2][1]
+                    tb_warn $error_list[CE2]
                 fi
                 return 0
 
             # *** More arguments than needed were used
             elif [[ ! -z "$3" ]]; then
                 if (( $flags[force] == 0 )); then
-                    tb_error $error_list[AE2][1]
+                    tb_error $error_list[AE2]
                     tb_print_help
                     return 1
                 fi
 
                 if (( $flags[verbose] == 1 )); then
-                    tb_warn $error_list[AE2][1]
+                    tb_warn $error_list[AE2]
                 fi
                 return 0
                 
@@ -368,12 +383,24 @@ the NAME of the saved shortcut.
                 fi
 
                 if (( $flags[verbose] == 1 )); then
-                    tb_warn $error_list[CE3][1]
+                    tb_warn $error_list[CE3] "\"$cyan${file:t}$reset\""
+                fi
+                return 0
+
+            # *** Symlink already exists in config directory
+            elif [[ -L "$config_files_dir/$name" && ! -z $name ]]; then
+                if (( $flags[force] == 0 )); then
+                    tb_error $error_list[CE3] "\"$cyan$name$reset\""
+                    return 2
+                fi
+
+                if (( $flags[verbose] == 1 )); then
+                    tb_warn $error_list[CE3] "\"$cyan$name$reset\""
                 fi
                 return 0
 
             # *** name is used as well as no-suffix
-            elif [[ ! -z $name && "$flags[no_suffix]" == "1" ]]; then
+            elif [[ ! -z $name && $flags[no_suffix] == "1" ]]; then
                 if (( $flags[force] == 0 )); then
                     tb_error $error_list[FE1] "$yellow--no-suffix$reset when argument ${cyan}name$reset is used (\"$cyan$name$reset\")"
                     tb_print_help
@@ -384,7 +411,6 @@ the NAME of the saved shortcut.
                     tb_warn $error_list[FE1] "$yellow--no-suffix$reset when argument ${cyan}name$reset is used (\"$cyan$name$reset\")"
                 fi
                 return 0
-                
             fi
             
             local link_name=$bn_file
@@ -411,41 +437,45 @@ the NAME of the saved shortcut.
         # REMOVE COMMAND =======================================================
         elif [[ $cmd_mode == "remove" || $cmd_mode == "rm" || $cmd_mode == "r" ]]; then
             
-            local name="$1"
-            local file="$config_files_dir/$name"          
-            
-            # ERROR CHECKS
-            # *** Symlink <name> does not exist (and not using force)
-            if [[ ! -f $file ]]; then
+            for arg in "$@"; do
+                local name="$1"
+                local file="$config_files_dir/$name"          
+                shift
+                
+                # ERROR CHECKS
+                # *** Symlink <name> does not exist (and not using force)
+                if [[ ! -L $file ]]; then
+                    if (( $flags[force] == 0 )); then
+                        tb_error $error_list[CE1] "\"$cyan$file$reset\""
+                        return 2
+                    fi
+
+                    if (( $flags[verbose] == 1 )); then
+                        tb_warn $error_list[CE1] "\"$cyan$file$reset\""
+                    fi
+                    continue
+
+                # *** More arguments than needed were used
+                elif [[ ! -z "$2" ]]; then
+                    if (( $flags[force] == 0 )); then
+                        tb_error $error_list[AE2]
+                        tb_print_help
+                        return 1
+                    fi
+
+                    if (( $flags[verbose] == 1 )); then
+                        tb_warn $error_list[AE2]
+                    fi
+                    continue
+                fi
+                
+                rm $file
+                
                 if (( $flags[force] == 0 )); then
-                    tb_error $error_list[CE1] "\"$cyan$file$reset\""
-                    return 2
+                    tb_success "Successfully removed config \"${cyan}$name${reset}\"."
                 fi
+            done
 
-                if (( $flags[verbose] == 1 )); then
-                    tb_warn $error_list[CE1] "\"$cyan$file$reset\""
-                fi
-                return 0
-
-            # *** More arguments than needed were used
-            elif [[ ! -z "$2" ]]; then
-                if (( $flags[force] == 0 )); then
-                    tb_error $error_list[AE2][1]
-                    tb_print_help
-                    return 1
-                fi
-
-                if (( $flags[verbose] == 1 )); then
-                    tb_warn $error_list[AE2][1]
-                fi
-                return 0
-            fi
-            
-            rm $file
-            
-            if (( $flags[force] == 0 )); then
-                tb_success "Successfully removed config \"${cyan}$name${reset}\"."
-            fi
             return 0
 
         # EDIT COMMAND ========================================================
@@ -486,25 +516,25 @@ the NAME of the saved shortcut.
             # *** File name is reserved
             elif [[ $name == $reserved || ($bn_file == $reserved && -z $name) ]]; then
                 if (( $flags[force] == 0 )); then
-                    tb_error $error_list[CE2][1]
+                    tb_error $error_list[CE2]
                     return 2
                 fi
 
                 if (( $flags[verbose] == 1 )); then
-                    tb_warn $error_list[CE2][1]
+                    tb_warn $error_list[CE2]
                 fi
                 return 0
 
             # *** More arguments than needed were used
             elif [[ ! -z "$3" ]]; then
                 if (( $flags[force] == 0 )); then
-                    tb_error $error_list[AE2][1]
+                    tb_error $error_list[AE2]
                     tb_print_help
                     return 1
                 fi
 
                 if (( $flags[verbose] == 1 )); then
-                    tb_warn $error_list[AE2][1]
+                    tb_warn $error_list[AE2]
                 fi
                 return 0
                 

@@ -24,7 +24,7 @@ the NAME of the saved shortcut.
     file name).
 
 [1mremove[0m, [1mrm[0m, [1m-r[0m, [1m--remove[0m
-    usage: config remove [OPTION...] NAME
+    usage: config remove [OPTION...] NAME [NAME...]
     
     Remove an existing shortcut from the list.
 
