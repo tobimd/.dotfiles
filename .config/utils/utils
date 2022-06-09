@@ -274,6 +274,7 @@ the NAME of the saved shortcut.
 
     if [[ ${commands[(ie)$final_args[1]]} -le ${#commands} ]]; then
         cmd_mode=$final_args[1]
+        shift final_args
     fi
 
     # Remove all arguments to start fresh
