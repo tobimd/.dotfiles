@@ -489,8 +489,11 @@ the NAME of the saved shortcut.
             local new_file="$config_files_dir/$new_name"
 
             if (( $flags[link] == 1 )); then
+                echo "using link flag"
                 new_file="$(realpath -m $new_name)"
             fi            
+
+            echo "DEBUG old_file=$old_file, new_file=$new_file, old_name=$old_name, new_name=$new_name"
             
             # ERROR CHECKS
             # *** Symlink <name> does not exist (and not using force)
@@ -592,10 +595,15 @@ the NAME of the saved shortcut.
 
             done
 
-
+            h=$(realpath ~)
             for file in $bn_files; do
                 if [[ $file != $reserved ]]; then
-                    echo "  $green$bold${(r($cur_length)( ))file}$reset  -> $(readlink "$config_files_dir/$file")"
+                    p=$(readlink "$config_files_dir/$file")
+                    if [[ ${p:0:${#h}} == $h ]]; then
+                        echo "  $green$bold${(r($cur_length)( ))file}$reset  ->  ~${p:${#h}}"
+                    else
+                        echo "  $green$bold${(r($cur_length)( ))file}$reset  ->  $p"
+                    fi
                 fi
             done
             echo ""

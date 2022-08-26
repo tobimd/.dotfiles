@@ -23,6 +23,7 @@ source $ZDOTDIR/.oh-my-zsh/oh-my-zsh.sh
 
 # Load Typewritten prompt
 fpath+=$ZDOTDIR/.oh-my-zsh/custom/typewritten-prompt
+autoload -U compinit; compinit
 autoload -U promptinit; promptinit
 prompt typewritten
 
@@ -34,12 +35,12 @@ alias zsource="source $ZDOTDIR/.zshrc"
 alias vim="$NEOVIM_HOME"
 alias wget="wget --hsts-file=$HOME/.hsts/.wget-hsts"
 alias today="date +'%A %d/%m/%y - %T'"
+alias php='/usr/local/Cellar/php@7.4/7.4.30/bin/php'
 
 # Python aliases
 alias python="python3"
 alias py="python3"
 alias pip="python3 -m pip"
-alias idle="idle3.9"
 alias venv-create="py -m venv"
 alias venv-stop="deactivate"  # to start: venv-init
 

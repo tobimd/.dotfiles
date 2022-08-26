@@ -15,7 +15,7 @@ UTILS_HOME="$HOME/.config/utils"
 # BEGIN APP DIRECTORIES
 GIT_HOME="/bin/git"
 LS_HOME="/bin/ls"
-FLUTTER_HOME="$DEVELOP_HOME/socialweb/flutter"
+FLUTTER_HOME="$DEVELOP_HOME/apps/flutter"
 PYTHON_HOME=""
 JAVA_HOME=""
 NEOVIM_HOME="/usr/bin/nvim"
@@ -47,7 +47,7 @@ elif [[ "$OSTYPE" == "darwin"* ]]; then
     # BEGIN MAC ENVIRONMENT VARIABLES
     LS_HOME="/usr/local/opt/coreutils/libexec/gnubin/ls"
     JAVA_HOME="/Library/Java/JavaVirtualMachines/jdk-16.0.1.jdk/Contents/Home"
-    PYTHON_HOME="/Library/Frameworks/Python.framework/Versions/3.9/bin"
+    PYTHON_HOME="/Library/Frameworks/Python.framework/Versions/3.9"
     NEOVIM_HOME="/usr/local/bin/nvim"
     GIT_HOME="/usr/bin/git"
     # END MAC ENVIRONMENT VARIABLES
