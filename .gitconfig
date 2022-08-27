@@ -13,10 +13,3 @@
 
 [pager]
 	branch = false
-
-[includeIf "gitdir:/home/tobi/Develop/usm/"]
-	path = /home/tobi/Develop/usm/.gitconfig
-
-[includeIf "gitdir:/home/tobi/Develop/socialweb/"]
-	path = /home/tobi/Develop/socialweb/.gitconfig
-

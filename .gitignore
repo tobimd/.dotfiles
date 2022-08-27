@@ -1,26 +1,19 @@
-# Main directories (Desktop/, Downloads/, etc.)
-/[A-Z]*/
+# Any file or directory at HOME
+/[A-Z]*
+/.*
 
-# Main dot directories (.bin/, .cache/, etc.)
-/.*/
-
-
-# Restore the following
-!/.ssh/config
-
+# Match exceptions
+!/.zsh/
+/.zsh/*
+/.zsh/.*
 !/.zsh/.zshrc
 
-!/.config/alacritty/*
-!/.config/fonts/*
-!/.config/karabiner/*
-!/.config/nvim/*
-!/.config/python/*
+!/.ssh/
+/.ssh/*
+!/.ssh/config
 
-!/.config/utils/cached-aliases
-!/.config/utils/env
-!/.config/utils/startup
-!/.config/utils/utils
+!/.config/
+/.config/utils/configfiles/*
+/.config/karabiner/*
+!/.config/karabiner/karabiner.json
 !/.config/utils/configfiles/.config-help
-
-!/.config/flake8
-!/.config/monitors.xml
