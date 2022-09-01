@@ -10,9 +10,9 @@ elif [[ $OSTYPE == "darwin"* ]]; then
 
     export LS_HOME="/usr/local/bin/gls"
 
-    export HOMEBREW_NO_ANALYTICS
-    export HOMEBREW_NO_ENV_HINTS
-    export HOMEBREW_AUTOREMOVE
+    export HOMEBREW_NO_ANALYTICS=1
+    export HOMEBREW_NO_ENV_HINTS=1
+    export HOMEBREW_AUTOREMOVE=1
 
 else
     # Windows specific settings
@@ -34,6 +34,7 @@ export ZSHRC_HOME="$ZDOTDIR/.zshrc"
 export EDITOR="/usr/local/bin/nvim"
 export LESSHISTFILE="/dev/null"
 export PYTHONSTARTUP="$HOME/.config/python/startup.py"
+export DOCKER_HOST="unix:///$HOME/.local/share/containers/podman/machine/default/podman.sock"
 
 PATH="$PATH:/usr/local/bin:/usr/local/sbin"
 typeset -U path

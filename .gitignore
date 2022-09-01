@@ -7,6 +7,8 @@
 /.zsh/*
 /.zsh/.*
 !/.zsh/.zshrc
+!/.zsh/typewritten
+!/.zsh/autocomplete
 
 !/.ssh/
 /.ssh/*

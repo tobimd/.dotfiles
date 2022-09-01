@@ -2,17 +2,17 @@
 
 # Wrapper for nvim, to open symlinks
 nvim() {
-  args=()
+    args=()
 
-  for i in $@; do
-    if [[ -h $i ]]; then
-      args+=`readlink $i`
-    else
-      args+=$i
-    fi
-  done
+    for i in $@; do
+        if [[ -h $i ]]; then
+            args+=`readlink $i`
+        else
+              args+=$i
+        fi
+    done
 
-  /usr/local/bin/nvim -p "${args[@]}"
+    /usr/local/bin/nvim -p "${args[@]}"
 }
 
 repstring() {
