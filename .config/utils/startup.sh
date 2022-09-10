@@ -50,6 +50,6 @@ export TYPEWRITTEN_SQUASH_GIT_DIRECTORIES="0"
 export TYPEWRITTEN_COLORS="git_branch:light;current_directory:green;symbol:light"
 export TYPEWRITTEN_SYMBOL="$"
 
-PATH="$PATH:/usr/local/bin:/usr/local/sbin:$HOME/.cargo/bin"
+PATH="/usr/local/bin:/usr/local/sbin:$HOME/.cargo/bin:$PATH"
 typeset -U path
 export PATH

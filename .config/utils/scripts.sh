@@ -66,21 +66,21 @@ startvenv() {
 git() {
     if [[ "$PWD" == "$HOME" ]]; then
         if [[ "$1" == "clone" ]];then
-            /usr/bin/git "$@"
+            /usr/local/bin/git "$@"
 
         elif [[ "$1" == "add" && "$2" == "--all" ]]; then
-            /usr/bin/git --git-dir="$HOME/.dotfiles/" --work-tree="$HOME" add --update
+            /usr/local/bin/git --git-dir="$HOME/.dotfiles/" --work-tree="$HOME" add --update
 
         elif [[ "$1" == "status" ]]; then
             shift
-            /usr/bin/git --git-dir="$HOME/.dotfiles/" --work-tree="$HOME" status -uno "$@"
+            /usr/local/bin/git --git-dir="$HOME/.dotfiles/" --work-tree="$HOME" status -uno "$@"
 
         else            
-            /usr/bin/git --git-dir="$HOME/.dotfiles/" --work-tree="$HOME" "$@"
+            /usr/local/bin/git --git-dir="$HOME/.dotfiles/" --work-tree="$HOME" "$@"
         fi
 
     else
-        /usr/bin/git "$@"
+        /usr/local/bin/git "$@"
     fi
 }
 
