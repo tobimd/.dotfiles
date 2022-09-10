@@ -1,23 +1,26 @@
 # Any file or directory at HOME
-/[A-Z]*
-/.*
+/*
 
 # Match exceptions
-!/.gitattributes
+!/.zsh
+!/.ssh
+!/.config
 
-!/.zsh/
 /.zsh/*
-/.zsh/.*
 !/.zsh/.zshrc
 !/.zsh/typewritten
 !/.zsh/autocomplete
 
-!/.ssh/
 /.ssh/*
 !/.ssh/config
 
-!/.config/
+/.config/*
+!/config/utils
+!/.config/karabiner
+!/.config/nerd-fonts
+
 /.config/utils/configfiles/*
+!/.config/utils/configfiles/.config-help
+
 /.config/karabiner/*
 !/.config/karabiner/karabiner.json
-!/.config/utils/configfiles/.config-help
