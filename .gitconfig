@@ -16,3 +16,7 @@
 
 [pager]
 	branch = false
+
+[filter "nocommit"]
+	clean="grep -viE -e '(\\#|//|;) +git-nocommit'"
+
