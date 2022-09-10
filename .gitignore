@@ -3,6 +3,8 @@
 /.*
 
 # Match exceptions
+!/.gitattributes
+
 !/.zsh/
 /.zsh/*
 /.zsh/.*
