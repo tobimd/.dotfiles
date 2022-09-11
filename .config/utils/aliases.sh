@@ -13,13 +13,13 @@ alias venv-create="python3 -m venv"
 alias venv-stop="deactivate" # to start: venv-init
 
 # flutter
-alias flutter="fvm flutter"
-alias dart="fvm dart"
-alias fvmpg="fvm flutter pub get"
-alias fvmpa="fvm flutter pub add"
-alias fvmd="fvm flutter doctor"
-alias fvmr="fvm flutter run"
-alias fvmrv="fvm flutter run --verbose"
+alias flutter="${USE_FVM:-""}flutter"
+alias dart="${USE_FVM:-""}dart"
+alias fvmpg="${USE_FVM:-""}flutter pub get"
+alias fvmpa="${USE_FVM:-""}flutter pub add"
+alias fvmd="${USE_FVM:-""}flutter doctor"
+alias fvmr="${USE_FVM:-""}flutter run"
+alias fvmrv="${USE_FVM:-""}flutter run --verbose"
 alias fvmu="fvm use"
 alias fvml="fvm list"
 

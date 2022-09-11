@@ -5,10 +5,6 @@ if [[ $OSTYPE == "linux-gnu"* ]]; then
 
     PATH="$PATH:$HOME/.local/bin"
 
-    # retain the / added after completing
-    # directories or symbolic links to directories
-    setopt no_auto_remove_slash
-
     # bind DELETE key (Supr)
     bindkey "^[[3~" delete-char
 
@@ -36,6 +32,16 @@ else
 
 fi
 
+# retain the / added after completing
+# directories or symbolic links to directories
+setopt no_auto_remove_slash
+
+
+# Common paths (separated for readiblity)
+PATH="$PATH:$HOME/.apps/flutter/bin"
+PATH="$PATH:$HOME/.apps/rust/cargo/bin"
+PATH="/usr/local/bin:/usr/local/sbin:$PATH"
+
 # Settings for zsh-autocomplete
 # (marlonrichert/zsh-autocomplete.git)
 
@@ -57,12 +63,18 @@ zstyle ':autocomplete:*' insert-unambiguous yes
 #     	updates selection in menu.
 zstyle ':autocomplete:*' widget-style menu-complete
 
-# Misc/general path or setting env variables
-export DOTFILES_HOME="$HOME/.dotfiles"
-export ZDOTDIR="$HOME/.zsh"
-export ZSHRC_HOME="$ZDOTDIR/.zshrc"
+# Base environment variables
 export EDITOR="/usr/local/bin/nvim"
 export LESSHISTFILE="/dev/null"
+
+# Locations
+export DOTFILES_HOME="$HOME/.dotfiles"
+export RUSTUP_HOME="$HOME/.apps/rust/rustup"
+export CARGO_HOME="$HOME/.apps/rust/cargo"
+export ZDOTDIR="$HOME/.zsh"
+export ZSHRC_HOME="$ZDOTDIR/.zshrc"
+export PUB_CACHE="$HOME/.apps/flutter/pub-cache"
+export FLUTTER_HOME="$HOME/.apps/flutter"
 export PYTHONSTARTUP="$HOME/.config/python/startup.py"
 
 # Typewritten specific env variables
@@ -74,6 +86,5 @@ export TYPEWRITTEN_SQUASH_GIT_DIRECTORIES="0"
 export TYPEWRITTEN_COLORS="git_branch:light;current_directory:green;symbol:light"
 export TYPEWRITTEN_SYMBOL="$"
 
-PATH="/usr/local/bin:/usr/local/sbin:$HOME/.cargo/bin:$PATH"
 typeset -U path
 export PATH
