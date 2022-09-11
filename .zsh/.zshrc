@@ -8,6 +8,8 @@ source $HOME/.config/utils/aliases.sh
 # status check for large repositories much, much faster [false]
 DISABLE_UNTRACKED_FILES_DIRTY="true"
 
+unset WAYLAND_DISPLAY
+
 # Load TYPEWRITTEN
 fpath+=$HOME/.zsh/typewritten
 autoload -U promptinit; promptinit

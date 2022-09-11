@@ -3,6 +3,22 @@
 if [[ $OSTYPE == "linux-gnu"* ]]; then
     # Linux specific settings
 
+    PATH="$PATH:$HOME/.local/bin"
+
+    # retain the / added after completing
+    # directories or symbolic links to directories
+    setopt no_auto_remove_slash
+
+    # bind DELETE key (Supr)
+    bindkey "^[[3~" delete-char
+
+    # bind HOME key (Inicio)
+    bindkey "^[[H" beginning-of-line
+
+    # bind END key (Fin)
+    bindkey "^[[F" end-of-line
+
+
 elif [[ $OSTYPE == "darwin"* ]]; then
     # MacOS specific settings
 
@@ -23,15 +39,23 @@ fi
 # Settings for zsh-autocomplete
 # (marlonrichert/zsh-autocomplete.git)
 
+# complete . and .. special directories
+zstyle ':completion:*' special-dirs true
+
+# kill command
+zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#) ([0-9a-z-]#)*=01;34=0=01'
+
 # [no]: tab inserts the top completion.
-#  yes: tab first inserts a substring common to all listed completions, if any
+# yes: tab first inserts a substring common to
+#  	all listed completions, if any
 zstyle ':autocomplete:*' insert-unambiguous yes
 
-# [complete-word]: (Shift-)Tab inserts the top (bottom) completion.
-#   menu-complete: Press again to cycle to next (previous) completion.
-#     menu-select: Same as `menu-complete`, but updates selection in menu.
+# [complete-word]: (Shift-)Tab inserts the top
+# 	(bottom) completion. menu-complete: Press again
+# 	to cycle to next (previous) completion.
+# menu-select: Same as `menu-complete`, but
+#     	updates selection in menu.
 zstyle ':autocomplete:*' widget-style menu-complete
-
 
 # Misc/general path or setting env variables
 export DOTFILES_HOME="$HOME/.dotfiles"
