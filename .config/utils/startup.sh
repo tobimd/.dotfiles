@@ -18,10 +18,10 @@ if [[ $OSTYPE == "linux-gnu"* ]]; then
 elif [[ $OSTYPE == "darwin"* ]]; then
     # MacOS specific settings
 
-    PATH="$PATH:/usr/local/Homebrew/bin"
+    PATH="/usr/local/Homebrew/bin:$PATH"
+    PATH="/usr/local/opt/gnu-sed/libexec/gnubin:$PATH"
 
     export LS_HOME="/usr/local/bin/gls"
-    export SED_HOME="/usr/local/opt/gnu-sed/libexec/gnubin/sed"
 
     export HOMEBREW_NO_ANALYTICS=1
     export HOMEBREW_NO_ENV_HINTS=1
