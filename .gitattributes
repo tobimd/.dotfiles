@@ -1,1 +1,2 @@
 .gitconfig filter=nocommit
+alacritty.yml filter=nocommit

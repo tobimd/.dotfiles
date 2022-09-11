@@ -15,12 +15,16 @@
 !/.ssh/config
 
 /.config/*
-!/config/utils
+!/.config/utils
 !/.config/karabiner
 !/.config/nerd-fonts
+!/.config/gtk-3.0/
 
 /.config/utils/configfiles/*
 !/.config/utils/configfiles/.config-help
 
 /.config/karabiner/*
 !/.config/karabiner/karabiner.json
+
+/.config/gtk-3.0/*
+!/.config/gtk-3.0/gtk.css

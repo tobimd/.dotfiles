@@ -1,7 +1,7 @@
 #!/usr/bin/zsh
 
+# Linux specific settings
 if [[ $OSTYPE == "linux-gnu"* ]]; then
-    # Linux specific settings
 
     PATH="$PATH:$HOME/.local/bin"
 
@@ -15,20 +15,30 @@ if [[ $OSTYPE == "linux-gnu"* ]]; then
     bindkey "^[[F" end-of-line
 
 
+# MacOS specific settings
 elif [[ $OSTYPE == "darwin"* ]]; then
-    # MacOS specific settings
-
-    PATH="$PATH:/usr/local/Homebrew/bin"
 
     export LS_HOME="/usr/local/bin/gls"
-    export SED_HOME="/usr/local/opt/gnu-sed/libexec/gnubin/sed"
 
+    # Homebrew
     export HOMEBREW_NO_ANALYTICS=1
     export HOMEBREW_NO_ENV_HINTS=1
     export HOMEBREW_AUTOREMOVE=1
 
+    # Gem
+    export GEM_HOME="$HOME/.config/gem"
+
+    # Android Studio
+    export ANDROID_HOME="$HOME/Library/Android/sdk"
+    export ANDROID_SDK_ROOT="$HOME/Library/Android/sdk"
+    export ANDROID_AVD_HOME="$HOME/.android/avd"
+
+    PATH="/usr/local/Homebrew/bin:$PATH"
+    PATH="/usr/local/opt/gnu-sed/libexec/gnubin:$PATH"
+    PATH="$GEM_HOME/bin:$PATH"
+
+# Windows specific settings
 else
-    # Windows specific settings
 
 fi
 
@@ -73,9 +83,13 @@ export RUSTUP_HOME="$HOME/.apps/rust/rustup"
 export CARGO_HOME="$HOME/.apps/rust/cargo"
 export ZDOTDIR="$HOME/.zsh"
 export ZSHRC_HOME="$ZDOTDIR/.zshrc"
+export PYTHONSTARTUP="$HOME/.config/python/startup.py"
+
+# Flutter variables
 export PUB_CACHE="$HOME/.apps/flutter/pub-cache"
 export FLUTTER_HOME="$HOME/.apps/flutter"
-export PYTHONSTARTUP="$HOME/.config/python/startup.py"
+export FLUTTER_SUPPRESS_ANALYTICS="true"
+
 
 # Typewritten specific env variables
 export TYPEWRITTEN_PROMPT_LAYOUT="singleline_split"
