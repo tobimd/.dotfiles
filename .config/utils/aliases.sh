@@ -1,4 +1,5 @@
 # general
+alias discord="/usr/bin/Discord"
 alias ls="${LS_HOME:-"/bin/ls"} -FAGgHop --color=always -X --group-directories-first --si"
 alias la="${LS_HOME:-"/bin/ls"} -FAGHpC --color=always -X --group-directories-first --si"
 alias lo="${LS_HOME:-"/bin/ls"} -F --color=always -X --group-directories-first --si"
