@@ -19,6 +19,7 @@ if [[ $OSTYPE == "linux-gnu"* ]]; then
 elif [[ $OSTYPE == "darwin"* ]]; then
 
     export LS_HOME="/usr/local/bin/gls"
+    export SED_HOME="/usr/local/opt/gnu-sed/libexec/gnubin/sed"
 
     # Homebrew
     export HOMEBREW_NO_ANALYTICS=1
@@ -48,7 +49,6 @@ setopt no_auto_remove_slash
 
 
 # Common paths (separated for readiblity)
-PATH="$PATH:$HOME/.apps/flutter/bin"
 PATH="$PATH:$HOME/.apps/rust/cargo/bin"
 PATH="/usr/local/bin:/usr/local/sbin:$PATH"
 
@@ -86,8 +86,7 @@ export ZSHRC_HOME="$ZDOTDIR/.zshrc"
 export PYTHONSTARTUP="$HOME/.config/python/startup.py"
 
 # Flutter variables
-export PUB_CACHE="$HOME/.apps/flutter/pub-cache"
-export FLUTTER_HOME="$HOME/.apps/flutter"
+export PUB_CACHE="$HOME/.config/flutter/pub-cache"
 export FLUTTER_SUPPRESS_ANALYTICS="true"
 
 

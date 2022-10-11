@@ -2,6 +2,7 @@
 alias ls="${LS_HOME:-"/bin/ls"} -FAGgHop --color=always -X --group-directories-first --si"
 alias la="${LS_HOME:-"/bin/ls"} -FAGHpC --color=always -X --group-directories-first --si"
 alias lo="${LS_HOME:-"/bin/ls"} -F --color=always -X --group-directories-first --si"
+alias sed="${SED_HOME:-"/usr/bin/sed"}"
 alias zsource="source $HOME/.zsh/.zshrc"
 alias wget="wget --hsts-file=/dev/null"
 alias vim="nvim"
@@ -10,6 +11,9 @@ alias vim="nvim"
 alias venv-start="startvenv"
 alias venv-create="python3 -m venv"
 alias venv-stop="deactivate" # to start: venv-init
+alias py="python3"
+alias python="python3"
+alias pip="pip3"
 
 # flutter
 alias flutter="${USE_FVM:-""}flutter"
