@@ -17,9 +17,7 @@ if [[ $OSTYPE == "linux-gnu"* ]]; then
 
 # MacOS specific settings
 elif [[ $OSTYPE == "darwin"* ]]; then
-
     export LS_HOME="/usr/local/bin/gls"
-    export SED_HOME="/usr/local/opt/gnu-sed/libexec/gnubin/sed"
 
     # Homebrew
     export HOMEBREW_NO_ANALYTICS=1

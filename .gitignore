@@ -18,7 +18,7 @@
 !/.config/utils
 !/.config/karabiner
 !/.config/nerd-fonts
-!/.config/gtk-3.0/
+!/.config/alacritty
 
 /.config/utils/configfiles/*
 !/.config/utils/configfiles/.config-help

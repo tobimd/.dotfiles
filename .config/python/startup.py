@@ -2,7 +2,7 @@ import os
 import atexit
 import readline
 
-history = os.path.join(os.path.expanduser('~'), '.config/python/history')
+history = os.path.join(os.path.expanduser('~'), '.config', 'python', 'history')
 try:
     readline.read_history_file(history)
 except OSError:

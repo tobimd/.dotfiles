@@ -89,3 +89,4 @@ alt_send_esc: false
 # > https://github.com/alacritty/alacritty/blob/master/alacritty.yml
 key_bindings:
   - { key: Delete, mods: Shift, chars: "\x15"     } # Delete line
+  - { key: Return,   mods: Control|Shift, action: SpawnNewInstance }
