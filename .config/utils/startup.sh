@@ -45,11 +45,6 @@ fi
 # directories or symbolic links to directories
 setopt no_auto_remove_slash
 
-
-# Common paths (separated for readiblity)
-PATH="$PATH:$HOME/.apps/rust/cargo/bin"
-PATH="/usr/local/bin:/usr/local/sbin:$PATH"
-
 # Settings for zsh-autocomplete
 # (marlonrichert/zsh-autocomplete.git)
 
@@ -71,17 +66,23 @@ zstyle ':autocomplete:*' insert-unambiguous yes
 #     	updates selection in menu.
 zstyle ':autocomplete:*' widget-style menu-complete
 
+# Common paths (separated for readiblity)
+PATH="$PATH:$HOME/.apps/rust/cargo/bin"
+PATH="/usr/local/bin:/usr/local/sbin:$PATH"
+
 # Base environment variables
 export EDITOR="/usr/local/bin/nvim"
 export LESSHISTFILE="/dev/null"
-
-# Locations
 export DOTFILES_HOME="$HOME/.dotfiles"
-export RUSTUP_HOME="$HOME/.apps/rust/rustup"
-export CARGO_HOME="$HOME/.apps/rust/cargo"
 export ZDOTDIR="$HOME/.zsh"
 export ZSHRC_HOME="$ZDOTDIR/.zshrc"
 export PYTHONSTARTUP="$HOME/.config/python/startup.py"
+export _ZO_DATA_DIR="$HOME/.config/zoxide"
+export GREP_OPTIONS="--color=always -E"
+
+# Rust
+export RUSTUP_HOME="$HOME/.apps/rust/rustup"
+export CARGO_HOME="$HOME/.apps/rust/cargo"
 
 # Flutter variables
 export PUB_CACHE="$HOME/.config/flutter/pub-cache"

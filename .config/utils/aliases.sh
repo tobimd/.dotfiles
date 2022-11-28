@@ -8,6 +8,16 @@ alias zsource="source $HOME/.zsh/.zshrc"
 alias wget="wget --hsts-file=/dev/null"
 alias vim="nvim"
 
+# mosquitto
+alias mq="mosquitto -c '/usr/local/etc/mosquitto/mosquitto.conf'"
+alias mqn="mosquitto -c '/usr/local/etc/mosquitto/mosquitto.conf' >/dev/null 2>&1 &"
+alias mqd="mosquitto -d -c '/usr/local/etc/mosquitto/mosquitto.conf'"
+alias mqdn="mosquitto -d -c '/usr/local/etc/mosquitto/mosquitto.conf' >/dev/null 2>&1 &"
+alias mqdv="mosquitto -d -v -c '/usr/local/etc/mosquitto/mosquitto.conf'"
+alias mqdvn="mosquitto -d -v -c '/usr/local/etc/mosquitto/mosquitto.conf' >/dev/null 2>&1 &"
+alias mqsub="mosquitto_sub -t "
+alias mqpub="mosquitto_pub -t "
+
 # python
 alias venv-start="startvenv"
 alias venv-create="python3 -m venv"
@@ -17,13 +27,12 @@ alias python="python3"
 alias pip="pip3"
 
 # flutter
-alias flutter="${USE_FVM:-""}flutter"
-alias dart="${USE_FVM:-""}dart"
-alias fvmpg="${USE_FVM:-""}flutter pub get"
-alias fvmpa="${USE_FVM:-""}flutter pub add"
-alias fvmd="${USE_FVM:-""}flutter doctor"
-alias fvmr="${USE_FVM:-""}flutter run"
-alias fvmrv="${USE_FVM:-""}flutter run --verbose"
+alias fl="${USE_FVM:-""}flutter"
+alias flpg="${USE_FVM:-""}flutter pub get"
+alias flpa="${USE_FVM:-""}flutter pub add"
+alias fldoc="${USE_FVM:-""}flutter doctor"
+alias flr="${USE_FVM:-""}flutter run"
+alias flrv="${USE_FVM:-""}flutter run --verbose"
 alias fvmu="fvm use"
 alias fvml="fvm list"
 
