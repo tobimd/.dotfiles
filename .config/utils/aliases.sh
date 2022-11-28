@@ -7,6 +7,8 @@ alias sed="${SED_HOME:-"/usr/bin/sed"}"
 alias zsource="source $HOME/.zsh/.zshrc"
 alias wget="wget --hsts-file=/dev/null"
 alias vim="nvim"
+alias ..="cd ../"
+alias ...="cd ../../"
 
 # mosquitto
 alias mq="mosquitto -c '/usr/local/etc/mosquitto/mosquitto.conf'"
