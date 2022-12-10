@@ -2,8 +2,7 @@
 
 # Linux specific settings
 if [[ $OSTYPE == "linux-gnu"* ]]; then
-
-    PATH="$PATH:$HOME/.local/bin"
+    mkdir -p /tmp/downloads /tmp/screenshots
 
     # bind DELETE key (Supr)
     bindkey "^[[3~" delete-char
@@ -13,7 +12,13 @@ if [[ $OSTYPE == "linux-gnu"* ]]; then
 
     # bind END key (Fin)
     bindkey "^[[F" end-of-line
+    
+    # Rust
+    export RUSTUP_HOME="$HOME/apps/rust/rustup"
+    export CARGO_HOME="$HOME/apps/rust/cargo"
 
+    PATH="$PATH:$HOME/.local/bin"
+    PATH="$PATH:$HOME/apps/rust/cargo/bin"
 
 # MacOS specific settings
 elif [[ $OSTYPE == "darwin"* ]]; then
@@ -32,9 +37,14 @@ elif [[ $OSTYPE == "darwin"* ]]; then
     export ANDROID_SDK_ROOT="$HOME/Library/Android/sdk"
     export ANDROID_AVD_HOME="$HOME/.android/avd"
 
+    # Rust
+    export RUSTUP_HOME="$HOME/.apps/rust/rustup"
+    export CARGO_HOME="$HOME/.apps/rust/cargo"
+
     PATH="/usr/local/Homebrew/bin:$PATH"
     PATH="/usr/local/opt/gnu-sed/libexec/gnubin:$PATH"
     PATH="$GEM_HOME/bin:$PATH"
+    PATH="$PATH:$HOME/.apps/rust/cargo/bin"
 
 # Windows specific settings
 else
@@ -67,8 +77,7 @@ zstyle ':autocomplete:*' insert-unambiguous yes
 zstyle ':autocomplete:*' widget-style menu-complete
 
 # Common paths (separated for readiblity)
-PATH="$PATH:$HOME/.apps/rust/cargo/bin"
-PATH="/usr/local/bin:/usr/local/sbin:$PATH"
+PATH="/usr/local/bin:/usr/local/sbin:$PATH:/bin"
 
 # Base environment variables
 export EDITOR="/usr/local/bin/nvim"
@@ -80,14 +89,9 @@ export PYTHONSTARTUP="$HOME/.config/python/startup.py"
 export _ZO_DATA_DIR="$HOME/.config/zoxide"
 export GREP_OPTIONS="--color=always -E"
 
-# Rust
-export RUSTUP_HOME="$HOME/.apps/rust/rustup"
-export CARGO_HOME="$HOME/.apps/rust/cargo"
-
 # Flutter variables
 export PUB_CACHE="$HOME/.config/flutter/pub-cache"
 export FLUTTER_SUPPRESS_ANALYTICS="true"
-
 
 # Typewritten specific env variables
 export TYPEWRITTEN_PROMPT_LAYOUT="singleline_split"
