@@ -85,7 +85,7 @@ export RUSTUP_HOME="$HOME/.apps/rust/rustup"
 export CARGO_HOME="$HOME/.apps/rust/cargo"
 
 # Flutter variables
-export PUB_CACHE="$HOME/.config/flutter/pub-cache"
+export PUB_CACHE="$HOME/Projects/ipfs_http_rpc/.dart_tool/dart-sdk/cache"
 export FLUTTER_SUPPRESS_ANALYTICS="true"
 
 

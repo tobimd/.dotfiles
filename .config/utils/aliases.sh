@@ -38,6 +38,15 @@ alias flrv="${USE_FVM:-""}flutter run --verbose"
 alias fvmu="fvm use"
 alias fvml="fvm list"
 
+# docker
+alias dk="docker"
+alias dkp="docker pull"
+alias dkb="docker build -t"
+alias dkrun="docker run"
+alias dkrmc="docker rm"
+alias dkrmi="docker rmi"
+alias dkcp="docker cp"
+
 # git
 alias g='git'
 alias ga='git add'
