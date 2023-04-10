@@ -18,6 +18,7 @@ if [[ $OSTYPE == "linux-gnu"* ]]; then
 # MacOS specific settings
 elif [[ $OSTYPE == "darwin"* ]]; then
     export LS_HOME="/usr/local/bin/gls"
+    export SED_HOME="/usr/local/opt/gnu-sed/libexec/gnubin/sed"
 
     # Homebrew
     export HOMEBREW_NO_ANALYTICS=1
@@ -66,9 +67,8 @@ zstyle ':autocomplete:*' insert-unambiguous yes
 #     	updates selection in menu.
 zstyle ':autocomplete:*' widget-style menu-complete
 
-# Common paths (separated for readiblity)
-PATH="$PATH:$HOME/.apps/rust/cargo/bin"
-PATH="/usr/local/bin:/usr/local/sbin:$PATH"
+# Common paths
+PATH="$HOME/apps/rust/cargo/bin:/usr/local/bin:/usr/local/sbin:$PATH"
 
 # Base environment variables
 export EDITOR="/usr/local/bin/nvim"
@@ -78,11 +78,10 @@ export ZDOTDIR="$HOME/.zsh"
 export ZSHRC_HOME="$ZDOTDIR/.zshrc"
 export PYTHONSTARTUP="$HOME/.config/python/startup.py"
 export _ZO_DATA_DIR="$HOME/.config/zoxide"
-export GREP_OPTIONS="--color=always -E"
 
 # Rust
-export RUSTUP_HOME="$HOME/.apps/rust/rustup"
-export CARGO_HOME="$HOME/.apps/rust/cargo"
+export RUSTUP_HOME="$HOME/apps/rust/rustup"
+export CARGO_HOME="$HOME/apps/rust/cargo"
 
 # Flutter variables
 export PUB_CACHE="$HOME/Projects/ipfs_http_rpc/.dart_tool/dart-sdk/cache"
