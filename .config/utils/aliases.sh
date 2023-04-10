@@ -8,6 +8,7 @@ alias zsource="source $HOME/.zsh/.zshrc"
 alias wget="wget --hsts-file=/dev/null"
 alias vim="nvim"
 alias ssh="TERM=xterm-256color $(which ssh)"
+alias time="gtime -p"
 alias ..="cd ../"
 alias ...="cd ../../"
 
@@ -38,6 +39,15 @@ alias flr="${USE_FVM:-""}flutter run"
 alias flrv="${USE_FVM:-""}flutter run --verbose"
 alias fvmu="fvm use"
 alias fvml="fvm list"
+
+# docker
+alias dk="docker"
+alias dkp="docker pull"
+alias dkb="docker build -t"
+alias dkrun="docker run"
+alias dkrmc="docker rm"
+alias dkrmi="docker rmi"
+alias dkcp="docker cp"
 
 # git
 alias g='git'
