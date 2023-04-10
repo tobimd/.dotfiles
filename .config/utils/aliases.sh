@@ -7,6 +7,7 @@ alias sed="${SED_HOME:-"/usr/bin/sed"}"
 alias zsource="source $HOME/.zsh/.zshrc"
 alias wget="wget --hsts-file=/dev/null"
 alias vim="nvim"
+alias ssh="TERM=xterm-256color $(which ssh)"
 alias ..="cd ../"
 alias ...="cd ../../"
 
