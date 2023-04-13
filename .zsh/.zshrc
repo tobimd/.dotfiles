@@ -3,7 +3,7 @@ source $HOME/.config/utils/startup.sh
 source $HOME/.config/utils/scripts.sh
 source $HOME/.config/utils/aliases.sh
 
-source $ZDOTDIR/zoxide/init.zsh
+#source $ZDOTDIR/zoxide/init.zsh
 
 # Disable marking untracked files under VCS as dirty. This makes repository
 # status check for large repositories much, much faster [false]
