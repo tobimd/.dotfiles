@@ -103,7 +103,7 @@ export TYPEWRITTEN_BRANCH_LEFT_SYMBOL="[ "
 export TYPEWRITTEN_BRANCH_RIGHT_SYMBOL=" ]"
 export TYPEWRITTEN_SQUASH_GIT_DIRECTORIES="0"
 export TYPEWRITTEN_COLORS="git_branch:light;current_directory:green;symbol:light"
-export TYPEWRITTEN_SYMBOL="$"
+export TYPEWRITTEN_SYMBOL='$'
 
 typeset -U path
 export PATH

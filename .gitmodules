@@ -4,6 +4,9 @@
 [submodule ".zsh/autocomplete"]
 	path = .zsh/autocomplete
 	url = https://github.com/marlonrichert/zsh-autocomplete.git
+[submodule ".zsh/fzf"]
+	path = .zsh/fzf
+	url = https://github.com/junegunn/fzf.git
 [submodule ".config/nerd-fonts"]
 	path = .config/nerd-fonts
 	url = git@github.com:tobimd/nerd-fonts.git
