@@ -77,26 +77,35 @@ zstyle ':autocomplete:*' insert-unambiguous yes
 #     	updates selection in menu.
 zstyle ':autocomplete:*' widget-style menu-complete
 
-# Common paths
 PATH="$HOME/apps/rust/cargo/bin:/usr/local/bin:/usr/local/sbin:$PATH"
+
+# ZSH
+setopt histignoredups
+setopt histsavenodups
+setopt sharehistory
+
+export ZDOTDIR="$HOME/.zsh"
+export ZSHRC_HOME="$ZDOTDIR/.zshrc"
+export HISTFILE="$ZDOTDIR/.zhistory"
+export HISTSIZE=99999
+export SAVEHIST=99999
+export _ZO_DATA_DIR="$HOME/.config/zoxide"
+
+# RUST
+export RUSTUP_HOME="$HOME/apps/rust/rustup"
+export CARGO_HOME="$HOME/apps/rust/cargo"
 
 # Base environment variables
 export EDITOR="/usr/local/bin/nvim"
 export LESSHISTFILE="/dev/null"
 export DOTFILES_HOME="$HOME/.dotfiles"
-export ZDOTDIR="$HOME/.zsh"
-export ZSHRC_HOME="$ZDOTDIR/.zshrc"
 export PYTHONSTARTUP="$HOME/.config/python/startup.py"
-export _ZO_DATA_DIR="$HOME/.config/zoxide"
 
-export RUSTUP_HOME="$HOME/apps/rust/rustup"
-export CARGO_HOME="$HOME/apps/rust/cargo"
-
-# Flutter variables
+# FLUTTER
 export PUB_CACHE="$HOME/Projects/ipfs_http_rpc/.dart_tool/dart-sdk/cache"
 export FLUTTER_SUPPRESS_ANALYTICS="true"
 
-# Typewritten specific env variables
+# TYPEWRITTEN
 export TYPEWRITTEN_PROMPT_LAYOUT="singleline_split"
 export TYPEWRITTEN_RELATIVE_PATH="adaptive"
 export TYPEWRITTEN_BRANCH_LEFT_SYMBOL="[ "
