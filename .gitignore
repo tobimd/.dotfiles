@@ -10,6 +10,7 @@
 !/.zsh/.zshrc
 !/.zsh/typewritten
 !/.zsh/autocomplete
+!/.zsh/fzf
 
 /.ssh/*
 !/.ssh/config
