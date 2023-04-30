@@ -22,6 +22,7 @@
 !/.config/alacritty
 !/.config/nnn
 !/.config/i3
+!/.config/nvim
 !/.config/user-dirs.dirs
 !/.config/user-dirs.locale
 
