@@ -72,7 +72,7 @@ export SAVEHIST=99999
 export _ZO_DATA_DIR="$HOME/.config/zoxide"
 
 # nnn
-export NNN_OPTS="deHio"
+export NNN_OPTS="deHi"
 export NNN_BMS="d:$HOME/desktop;w:$HOME/downloads;c:$HOME/documents;p:$HOME/projects;a:$HOME/apps"
 
 # rust
