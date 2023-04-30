@@ -10,3 +10,9 @@
 [submodule ".config/nerd-fonts"]
 	path = .config/nerd-fonts
 	url = git@github.com:tobimd/nerd-fonts.git
+[submodule ".config/i3/i3lock-color"]
+	path = .config/i3/i3lock-color
+	url = https://github.com/Raymo111/i3lock-color.git
+[submodule ".config/i3/i3lock-fancy"]
+	path = .config/i3/i3lock-fancy
+	url = https://github.com/meskarune/i3lock-fancy.git
