@@ -1,5 +1,4 @@
 # general
-alias discord="/usr/bin/Discord"
 alias ls="${LS_HOME:-"/bin/ls"} -FAGgHop --color=always -X --group-directories-first --si"
 alias la="${LS_HOME:-"/bin/ls"} -FAGHpC --color=always -X --group-directories-first --si"
 alias lo="${LS_HOME:-"/bin/ls"} -F --color=always -X --group-directories-first --si"
@@ -7,6 +6,7 @@ alias sed="${SED_HOME:-"/usr/bin/sed"}"
 alias zsource="source $HOME/.zsh/.zshrc"
 alias wget="wget --hsts-file=/dev/null"
 alias vim="nvim"
+alias scrot="/usr/bin/scrot --file '/tmp/screenshots/screenshot_%y-%m-%d_\$wx\$h.png' -fs"
 alias ssh="TERM=xterm-256color $(which ssh)"
 alias time="gtime -p"
 alias ..="cd ../"

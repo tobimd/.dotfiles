@@ -1,26 +1,19 @@
 #!/usr/bin/zsh
 
-# Linux specific settings
+# === Os specific settings
 if [[ $OSTYPE == "linux-gnu"* ]]; then
-    mkdir -p /tmp/downloads /tmp/screenshots
+    mkdir -p /tmp/downloads /tmp/screenshots /tmp/trash
 
-    # bind DELETE key (Supr)
+    # KP_Delete (keypad - delete) now ":"
+    xmodmap -e "keycode 91 = colon"
+
+    # bind DELETE key
     bindkey "^[[3~" delete-char
-
-    # bind HOME key (Inicio)
+    # bind HOME key
     bindkey "^[[H" beginning-of-line
-
-    # bind END key (Fin)
+    # bind END key
     bindkey "^[[F" end-of-line
-    
-    # Rust
-    export RUSTUP_HOME="$HOME/apps/rust/rustup"
-    export CARGO_HOME="$HOME/apps/rust/cargo"
 
-    PATH="$PATH:$HOME/.local/bin"
-    PATH="$PATH:$HOME/apps/rust/cargo/bin"
-
-# MacOS specific settings
 elif [[ $OSTYPE == "darwin"* ]]; then
     export LS_HOME="/usr/local/bin/gls"
     export SED_HOME="/usr/local/opt/gnu-sed/libexec/gnubin/sed"
@@ -38,74 +31,65 @@ elif [[ $OSTYPE == "darwin"* ]]; then
     export ANDROID_SDK_ROOT="$HOME/Library/Android/sdk"
     export ANDROID_AVD_HOME="$HOME/.android/avd"
 
-    # Rust
-    export RUSTUP_HOME="$HOME/.apps/rust/rustup"
-    export CARGO_HOME="$HOME/.apps/rust/cargo"
-
-    PATH="/usr/local/Homebrew/bin:$PATH"
     PATH="/usr/local/opt/gnu-sed/libexec/gnubin:$PATH"
+    PATH="/usr/local/Homebrew/bin:$PATH"
     PATH="$GEM_HOME/bin:$PATH"
-    PATH="$PATH:$HOME/.apps/rust/cargo/bin"
-
-# Windows specific settings
-else
-
 fi
 
-# retain the / added after completing
-# directories or symbolic links to directories
+# === Shell options
+# keep "/" after completion of directories
 setopt no_auto_remove_slash
-
-# Settings for zsh-autocomplete
-# (marlonrichert/zsh-autocomplete.git)
-
-# complete . and .. special directories
-zstyle ':completion:*' special-dirs true
-
-# kill command
-zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#) ([0-9a-z-]#)*=01;34=0=01'
-
-# [no]: tab inserts the top completion.
-# yes: tab first inserts a substring common to
-#  	all listed completions, if any
-zstyle ':autocomplete:*' insert-unambiguous yes
-
-# [complete-word]: (Shift-)Tab inserts the top
-# 	(bottom) completion. menu-complete: Press again
-# 	to cycle to next (previous) completion.
-# menu-select: Same as `menu-complete`, but
-#     	updates selection in menu.
-zstyle ':autocomplete:*' widget-style menu-complete
-
-PATH="$HOME/apps/rust/cargo/bin:/usr/local/bin:/usr/local/sbin:$PATH"
-
-# ZSH
+# disable instant session-exit when using ctrl+d
+setopt ignoreeof
+# glob asterisk includes "."
+setopt globdots
+# skip duplications in history
 setopt histignoredups
+# do not save duplicated commands
 setopt histsavenodups
+# allow shared history for different sessions
 setopt sharehistory
 
+# === Autocompletion options
+# complete for "." and ".."
+zstyle ':completion:*' special-dirs true
+# kill command
+zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#) ([0-9a-z-]#)*=01;34=0=01'
+# autocomplete unambiguous
+zstyle ':autocomplete:*' insert-unambiguous yes
+# use menu-complete for tabs
+zstyle ':autocomplete:*' widget-style menu-complete
+
+# === Environment variables
+# zsh
 export ZDOTDIR="$HOME/.zsh"
 export ZSHRC_HOME="$ZDOTDIR/.zshrc"
 export HISTFILE="$ZDOTDIR/.zhistory"
 export HISTSIZE=99999
 export SAVEHIST=99999
+
+# zoxide
 export _ZO_DATA_DIR="$HOME/.config/zoxide"
 
-# RUST
+# nnn
+export NNN_OPTS="deHio"
+export NNN_BMS="d:$HOME/desktop;w:$HOME/downloads;c:$HOME/documents;p:$HOME/projects;a:$HOME/apps"
+
+# rust
 export RUSTUP_HOME="$HOME/apps/rust/rustup"
 export CARGO_HOME="$HOME/apps/rust/cargo"
 
-# Base environment variables
+# misc
 export EDITOR="/usr/local/bin/nvim"
 export LESSHISTFILE="/dev/null"
 export DOTFILES_HOME="$HOME/.dotfiles"
 export PYTHONSTARTUP="$HOME/.config/python/startup.py"
 
-# FLUTTER
+# flutter
 export PUB_CACHE="$HOME/Projects/ipfs_http_rpc/.dart_tool/dart-sdk/cache"
 export FLUTTER_SUPPRESS_ANALYTICS="true"
 
-# TYPEWRITTEN
+# typewritten prompt
 export TYPEWRITTEN_PROMPT_LAYOUT="singleline_split"
 export TYPEWRITTEN_RELATIVE_PATH="adaptive"
 export TYPEWRITTEN_BRANCH_LEFT_SYMBOL="[ "
@@ -114,5 +98,16 @@ export TYPEWRITTEN_SQUASH_GIT_DIRECTORIES="0"
 export TYPEWRITTEN_COLORS="git_branch:light;current_directory:green;symbol:light"
 export TYPEWRITTEN_SYMBOL='$'
 
+# === Update path
+PATH="$HOME/.local/bin:$PATH"
+PATH="$CARGO_HOME/bin:$PATH"
+PATH="/usr/local/bin:$PATH"
+PATH="/usr/local/sbin:$PATH"
+
 typeset -U path
 export PATH
+
+# === Source scripts
+for script in $HOME/.config/utils/scripts/*.sh; do
+    source $script
+done

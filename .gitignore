@@ -1,7 +1,7 @@
-# Any file or directory at HOME
+# any file or directory at HOME
 /*
 
-# Match exceptions
+# match exceptions
 !/.zsh
 !/.ssh
 !/.config
@@ -20,9 +20,10 @@
 !/.config/karabiner
 !/.config/nerd-fonts
 !/.config/alacritty
-
-/.config/utils/configfiles/*
-!/.config/utils/configfiles/.config-help
+!/.config/nnn
+!/.config/i3
+!/.config/user-dirs.dirs
+!/.config/user-dirs.locale
 
 /.config/karabiner/*
 !/.config/karabiner/karabiner.json

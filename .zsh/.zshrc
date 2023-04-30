@@ -1,6 +1,5 @@
 source $ZDOTDIR/autocomplete/zsh-autocomplete.plugin.zsh
 source $HOME/.config/utils/startup.sh
-source $HOME/.config/utils/scripts.sh
 source $HOME/.config/utils/aliases.sh
 
 #source $ZDOTDIR/zoxide/init.zsh
