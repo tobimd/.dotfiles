@@ -3,7 +3,6 @@
 
 # match exceptions
 !/.zsh
-!/.ssh
 !/.config
 
 /.zsh/*
@@ -11,9 +10,6 @@
 !/.zsh/typewritten
 !/.zsh/autocomplete
 !/.zsh/fzf
-
-/.ssh/*
-!/.ssh/config
 
 /.config/*
 !/.config/utils
