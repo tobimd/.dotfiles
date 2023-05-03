@@ -14,18 +14,18 @@ alias ...="cd ../../"
 
 # mosquitto
 alias mq="mosquitto -c '/usr/local/etc/mosquitto/mosquitto.conf'"
-alias mqn="mosquitto -c '/usr/local/etc/mosquitto/mosquitto.conf' >/dev/null 2>&1 &"
+alias mqn="mosquitto -c '/usr/local/etc/mosquitto/mosquitto.conf' >/dev/null 2>&1 & disown"
 alias mqd="mosquitto -d -c '/usr/local/etc/mosquitto/mosquitto.conf'"
-alias mqdn="mosquitto -d -c '/usr/local/etc/mosquitto/mosquitto.conf' >/dev/null 2>&1 &"
+alias mqdn="mosquitto -d -c '/usr/local/etc/mosquitto/mosquitto.conf' >/dev/null 2>&1 & disown"
 alias mqdv="mosquitto -d -v -c '/usr/local/etc/mosquitto/mosquitto.conf'"
-alias mqdvn="mosquitto -d -v -c '/usr/local/etc/mosquitto/mosquitto.conf' >/dev/null 2>&1 &"
+alias mqdvn="mosquitto -d -v -c '/usr/local/etc/mosquitto/mosquitto.conf' >/dev/null 2>&1 & disown"
 alias mqsub="mosquitto_sub -t "
 alias mqpub="mosquitto_pub -t "
 
 # python
 alias venv-start="startvenv"
 alias venv-create="python3 -m venv"
-alias venv-stop="deactivate" # to start: venv-init
+alias venv-stop="deactivate"
 alias py="python3"
 alias python="python3"
 alias pip="pip3"

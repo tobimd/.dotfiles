@@ -34,6 +34,8 @@ elif [[ $OSTYPE == "darwin"* ]]; then
     PATH="/usr/local/opt/gnu-sed/libexec/gnubin:$PATH"
     PATH="/usr/local/Homebrew/bin:$PATH"
     PATH="$GEM_HOME/bin:$PATH"
+
+    alias ip='ipconfig getifaddr en0'
 fi
 
 # === Shell options
