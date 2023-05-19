@@ -5,7 +5,7 @@ if [[ $OSTYPE == "linux-gnu"* ]]; then
     mkdir -p /tmp/downloads /tmp/screenshots /tmp/trash
 
     # KP_Delete (keypad - delete) now ":"
-    xmodmap -e "keycode 91 = colon"
+    xmodmap -e "keycode 91 = period colon"
 
     # bind DELETE key
     bindkey "^[[3~" delete-char
