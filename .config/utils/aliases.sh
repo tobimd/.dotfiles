@@ -9,8 +9,15 @@ alias vim="nvim"
 alias scrot="/usr/bin/scrot --file '/tmp/screenshots/screenshot_%y-%m-%d_\$wx\$h.png' -fs"
 alias ssh="TERM=xterm-256color $(which ssh)"
 alias time="gtime -p"
-alias ..="cd ../"
-alias ...="cd ../../"
+
+# paths
+alias cd~='cd ~'
+alias ..='cd ../'
+alias cd..='cd ../'
+alias ...='cd ../../'
+alias cd...='cd ../../'
+alias ....='cd ../../../'
+alias cd....='cd ../../../'
 
 # mosquitto
 alias mq="mosquitto -c '/usr/local/etc/mosquitto/mosquitto.conf'"
@@ -29,6 +36,7 @@ alias venv-stop="deactivate"
 alias py="python3"
 alias python="python3"
 alias pip="pip3"
+alias pytest="python3 -m unittest"
 
 # flutter
 alias fl="${USE_FVM:-""}flutter"
@@ -42,6 +50,13 @@ alias fvml="fvm list"
 
 # docker
 alias dk="docker"
+alias dkl="docker logs -f"
+alias dkll="docker logs"
+alias dkps="docker ps"
+alias dkpsa="docker ps -a"
+alias dkip="docker image prune -f"
+alias dkils="docker images"
+alias dkcls="docker container ls"
 alias dkp="docker pull"
 alias dkb="docker build -t"
 alias dkrun="docker run"
