@@ -21,3 +21,5 @@
 	# use 'git-nocommit' to ignore a line or '[ git-nocommit'
 	# + ... + 'git-nocommit ]' to ignore a segment
 	clean="sed -E 'N;N;s_(\\#|//) *\\[ *git-nocommit(.|\\n)+git-nocommit *\\]|(\\n|^)[^\\n]*(\\#|//) *git-nocommit[^\\n]*\\n_\\n_img;P;D'"
+[core]
+	ignorecase = false

@@ -19,6 +19,10 @@ alias cd...='cd ../../'
 alias ....='cd ../../../'
 alias cd....='cd ../../../'
 
+# nix
+alias nxsh='nix-shell'
+alias nxshell='nix-shell'
+
 # mosquitto
 alias mq="mosquitto -c '/usr/local/etc/mosquitto/mosquitto.conf'"
 alias mqn="mosquitto -c '/usr/local/etc/mosquitto/mosquitto.conf' >/dev/null 2>&1 & disown"
@@ -50,6 +54,10 @@ alias fvml="fvm list"
 
 # docker
 alias dk="docker"
+alias dkp="docker pull"
+alias dkb="docker build -t"
+alias dkx="docker buildx build -t"
+alias dkr="docker run --rm -it"
 alias dkl="docker logs -f"
 alias dkll="docker logs"
 alias dkps="docker ps"
@@ -57,8 +65,6 @@ alias dkpsa="docker ps -a"
 alias dkip="docker image prune -f"
 alias dkils="docker images"
 alias dkcls="docker container ls"
-alias dkp="docker pull"
-alias dkb="docker build -t"
 alias dkrun="docker run"
 alias dkrmc="docker rm"
 alias dkrmi="docker rmi"

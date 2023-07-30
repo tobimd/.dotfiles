@@ -10,14 +10,19 @@ DISABLE_UNTRACKED_FILES_DIRTY="true"
 
 unset WAYLAND_DISPLAY
 
-# Load TYPEWRITTEN
+fpath+=$HOME/.zsh/.zfunctions
 fpath+=$HOME/.zsh/typewritten
 autoload -U promptinit; promptinit
 prompt typewritten
 
-fpath=($fpath "$HOME/.zsh/.zfunctions")
-
 # Load zoxide
 eval "$(zoxide init zsh)"
 
+export PATH="/usr/local/opt/opencv@3/bin:$PATH"
+export LDFLAGS="-L/usr/local/opt/opencv@3/lib"
+export CPPFLAGS="-I/usr/local/opt/opencv@3/include"
+
 #[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+# setup direnv
+eval "$(direnv hook zsh)"
