@@ -4,6 +4,7 @@
 # match exceptions
 !/.zsh
 !/.config
+!/.bashrc
 
 /.zsh/*
 !/.zsh/.zshrc
