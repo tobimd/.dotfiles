@@ -70,6 +70,10 @@ export HISTFILE="$ZDOTDIR/.zhistory"
 export HISTSIZE=99999
 export SAVEHIST=99999
 
+# bun
+export BUN_INSTALL="$HOME/apps/bun"
+export BUN_HOME="$BUN_INSTALL"
+
 # zoxide
 export _ZO_DATA_DIR="$HOME/.config/zoxide"
 
@@ -103,6 +107,7 @@ export TYPEWRITTEN_SYMBOL='$'
 # === Update path
 PATH="$HOME/.local/bin:$PATH"
 PATH="$CARGO_HOME/bin:$PATH"
+PATH="$BUN_HOME/bin:$PATH"
 PATH="/usr/local/bin:$PATH"
 PATH="/usr/local/sbin:$PATH"
 

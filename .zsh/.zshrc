@@ -26,3 +26,6 @@ export CPPFLAGS="-I/usr/local/opt/opencv@3/include"
 
 # setup direnv
 eval "$(direnv hook zsh)"
+
+# bun completions
+[ -s "$BUN_HOME/_bun" ] && source "$BUN_HOME/_bun"
