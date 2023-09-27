@@ -20,10 +20,10 @@ exec --no-startup-id xset s off -dpms -k
 # auto-enable numlock
 exec --no-startup-id numlockx on
 
-# start network manager system tray
-exec --no-startup-id nm-applet
 # start volume manager system tray
 exec --no-startup-id pasystray
+# start network manager system tray
+exec --no-startup-id nm-applet
 
 # set horizontal order of monitors and scale of tv
 exec --no-startup-id xrandr --output HDMI-0 --mode 1920x1080 --auto
@@ -31,6 +31,9 @@ exec --no-startup-id xrandr --output DVI-D-0 --auto --right-of HDMI-0
 
 # allow theme coexistance between gnome and i3
 exec --no-startup-id /usr/libexec/gsd-xsettings
+
+# set keybind for 'Supr' key in numpad (KP_Delete + Shift == ':')
+exec --no-startup-id xmodmap -e "keycode 91 = period colon"
 
 # ==== options ====
 # ~~~~~~~~~~~~~~~~~
