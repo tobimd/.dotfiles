@@ -17,5 +17,5 @@ eval "$(zoxide init zsh)"
 # setup direnv
 eval "$(direnv hook zsh)"
 
-[ -f "$ZDOTDIR/fzf/.fzf.zsh"] && source "$ZDOTDIR/fzf/.fzf.zsh"
+[ -f "$ZDOTDIR/fzf/.fzf.zsh" ] && source "$ZDOTDIR/fzf/.fzf.zsh"
 [ -s "$BUN_HOME/_bun" ] && source "$BUN_HOME/_bun"
