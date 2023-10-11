@@ -33,8 +33,13 @@ exec --no-startup-id xrandr --output DVI-D-0 --auto --right-of HDMI-0
 # allow theme coexistance between gnome and i3
 exec --no-startup-id /usr/libexec/gsd-xsettings
 
-# set keybind for 'Supr' key in numpad (KP_Delete + Shift == ':')
+# map key "del/supr" in numpad
 exec --no-startup-id xmodmap -e "keycode 91 = period colon"
+# map comma and period keys in keyboard
+exec --no-startup-id xmodmap -e "keycode 59 = comma semicolon NoSymbol NoSymbol less lessthanequal"
+exec --no-startup-id xmodmap -e "keycode 60 = period colon NoSymbol NoSymbol greater greaterthanequal"
+# map capslock
+exec --no-startup-id xmodmap -e "clear Lock" -e "keycode 66 = Escape"
 
 # ==== options ====
 # ~~~~~~~~~~~~~~~~~
