@@ -20,6 +20,7 @@ exec --no-startup-id xset s off -dpms -k
 # auto-enable numlock
 exec --no-startup-id numlockx on
 
+exec --no-startup-id source ~/.config/utils/scripts/pasystray.sh
 # start volume manager system tray
 exec --no-startup-id pasystray
 # start network manager system tray
