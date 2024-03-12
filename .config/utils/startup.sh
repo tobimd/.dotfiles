@@ -4,6 +4,19 @@
 if [[ $OSTYPE == "linux-gnu"* ]]; then
     mkdir -p /tmp/downloads /tmp/screenshots /tmp/trash
 
+    # Android Studio
+    export ANDROID_HOME="$HOME/apps/android-sdk"
+    export ANDROID_USER_HOME="$HOME/apps/android-studio/user"
+    export ANDROID_AVD_HOME="$ANDROID_USER_HOME/avd"
+    export STUDIO_JDK="$HOME/apps/android-studio/jbr"
+
+    PATH="$PATH:$ANDROID_HOME/emulator"
+    PATH="$PATH:$ANDROID_HOME/platform-tools"
+    PATH="$PATH:$ANDROID_HOME/cmdline-tools/latest/bin"
+    PATH="$PATH:$ANDROID_HOME/tools/bin"
+    PATH="$PATH:$ANDROID_HOME/tools"
+    # PATH="$PATH:$HOME/apps/android-studio"
+
     # bind DELETE key
     bindkey "^[[3~" delete-char
     # bind HOME key
