@@ -20,9 +20,8 @@ exec --no-startup-id xset s off -dpms -k
 # auto-enable numlock
 exec --no-startup-id numlockx on
 
-exec --no-startup-id source ~/.config/utils/scripts/pasystray.sh
 # start volume manager system tray
-exec --no-startup-id pasystray
+exec --no-startup-id /home/tobi/.config/utils/scripts/pasystray.sh
 # start network manager system tray
 exec --no-startup-id nm-applet
 
@@ -54,6 +53,9 @@ tiling_drag modifier titlebar
 # set left monitor (tv) to have workspace 9
 workspace 9 output HDMI-0
 
+# (tmp dev) set "Map editor"-named window to be floating by default (rust, thesis)
+for_window [class="Map editor"] floating enable
+
 # ==== keybinds ====
 # ~~~~~~~~~~~~~~~~~~
 
@@ -61,7 +63,14 @@ workspace 9 output HDMI-0
 bindsym $mod+Return exec tilix --new-process
 
 # screenshot
-bindsym $mod+Shift+s exec /usr/bin/scrot --file '/tmp/screenshots/screenshot_%y-%m-%d_$wx$h.png' -fs
+bindsym $mod+Shift+s exec xs
+
+# discord
+bindsym $mod+Shift+d exec discord
+
+# browser
+bindsym $mod+Shift+b exec firefox
+bindsym $mod+Shift+n exec firefox -private-window
 
 # kill focused window
 bindsym $mod+Shift+q kill
