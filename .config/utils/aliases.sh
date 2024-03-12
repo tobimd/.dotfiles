@@ -7,8 +7,13 @@ alias zsource="source $HOME/.zsh/.zshrc"
 alias wget="wget --hsts-file=/dev/null"
 alias vim="nvim"
 alias scrot="/usr/bin/scrot --file '/tmp/screenshots/screenshot_%y-%m-%d_\$wx\$h.png' -fs"
+alias cpc="xclip -sel c <"
+alias cppng="xclip -sel c -t image/png "
+alias cpjpg="xclip -sel c -t image/jpg "
 alias ssh="TERM=xterm-256color $(which ssh)"
 alias time="gtime -p"
+alias o="xdg-open"
+alias epic='legendary'
 
 # paths
 alias cd~='cd ~'
@@ -54,20 +59,23 @@ alias fvml="fvm list"
 
 # docker
 alias dk="docker"
-alias dkp="docker pull"
+alias dkl="docker pull"
+alias dkp="docker push"
 alias dkb="docker build -t"
 alias dkx="docker buildx build -t"
 alias dkr="docker run --rm -it"
 alias dks="docker stop -t 0"
 alias dke="docker exec -it"
-alias dkl="docker logs -f"
-alias dkll="docker logs"
+alias dkll="docker logs -f"
+alias dklogs="docker logs"
 alias dkps="docker ps"
 alias dkpsa="docker ps -a"
 alias dkcpf="docker container prune -f"
 alias dkipf="docker image prune -f"
 alias dkils="docker image ls"
 alias dkcls="docker container ls"
+alias dki="docker image"
+alias dkc="docker container"
 alias dkcm="docker compose"
 alias dkcu="docker compose up"
 alias dkcd="docker compose down"
@@ -105,7 +113,7 @@ alias gca='git commit -v -a'
 alias gca!='git commit -v -a --amend'
 alias gcan!='git commit -v -a --no-edit --amend'
 alias gcans!='git commit -v -a -s --no-edit --amend'
-alias gcam='git commit -a -m'
+alias gcam='git commit --allow-empty -m'
 alias gcas='git commit -a -s'
 alias gcasm='git commit -a -s -m'
 alias gcsm='git commit -s -m'
