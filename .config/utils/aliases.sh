@@ -13,7 +13,6 @@ alias cpjpg="xclip -sel c -t image/jpg "
 alias ssh="TERM=xterm-256color $(which ssh)"
 alias time="gtime -p"
 alias o="xdg-open"
-alias epic='legendary'
 
 # paths
 alias cd~='cd ~'
