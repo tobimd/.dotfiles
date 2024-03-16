@@ -25,9 +25,13 @@ exec --no-startup-id /home/tobi/.config/utils/scripts/pasystray.sh
 # start network manager system tray
 exec --no-startup-id nm-applet
 
-# set horizontal order of monitors and scale of tv
-exec --no-startup-id xrandr --output HDMI-0 --mode 1920x1080 --auto
-exec --no-startup-id xrandr --output DVI-D-0 --auto --right-of HDMI-0
+# set horizontal order of monitors and scale of tv and respective initial workspaces
+set $tv "HDMI-0"
+set $pc "DVI-D-0"
+exec --no-startup-id xrandr --output $tv --mode 1920x1080 --auto
+exec --no-startup-id xrandr --output $pc --auto --right-of HDMI-0
+workspace 2 output $pc
+workspace 1 output $tv
 
 # allow theme coexistance between gnome and i3
 exec --no-startup-id /usr/libexec/gsd-xsettings
@@ -49,9 +53,6 @@ floating_modifier $mod
 # move tiling windows via drag & drop by left-clicking into the title bar, or
 # left-clicking anywhere into the window while holding the floating modifier.
 tiling_drag modifier titlebar
-
-# set left monitor (tv) to have workspace 9
-workspace 9 output HDMI-0
 
 # (tmp dev) set "Map editor"-named window to be floating by default (rust, thesis)
 for_window [class="Map editor"] floating enable
