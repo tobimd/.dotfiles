@@ -1,0 +1,67 @@
+# get editor completions based on the config schema
+"$schema" = 'https://starship.rs/config-schema.json'
+palette = 'main'
+add_newline = false
+format = '''$directory $character'''
+right_format = '([\[](dark) $git_branch($git_commit)($git_status)( $git_state) [\]](dark))'
+
+[character]
+success_symbol = '[\$](light)'
+error_symbol = '[\$](red)'
+vimcmd_symbol = '[\$](purple)'
+
+[directory]
+style = 'green'
+format = '[$path]($style)'
+repo_root_style = 'bold green'
+repo_root_format = '[git:](gray)[$repo_root](dark-green)[$path]($style)'
+truncation_length = 8
+truncation_symbol = '…/'
+read_only = ''
+
+[git_branch]
+format = '[$branch(:$remote_branch)](light)'
+symbol = ''
+
+[git_state]
+rebase = '[rebasing](magenta)'
+merge = '[merging](magenta)'
+revert = 'reverting'
+cherry_pick = 'cherry-picking'
+bisect = 'bisecting'
+am = '[am](cyan)'
+am_or_rebase = '[am/rebase](magenta)'
+style = 'italic yellow'
+
+[git_commit]
+format = "[@$hash$tag](gray)"
+commit_hash_length = 5
+
+[git_status]
+format = '( $conflicted)( $stashed)( $deleted)( $renamed)( $modified)( $typechanged)( $staged)( $untracked)( $ahead_behind)'
+staged = '[+](green)'
+conflicted = '[≠](red)'
+ahead = '[↦](cyan)'
+behind = '[↤](cyan)'
+diverged = '[~](orange)'
+up_to_date = ''
+untracked = '[?](light)'
+stashed = '[󰈈](yellow)'
+modified = '[*](yellow)'
+renamed = '[»](orange)'
+deleted = '[-](red)'
+typechanged = ''
+
+[palettes.main]
+red = "#c13e3e"
+orange = "#cc9145"
+yellow = "#d3ca4c"
+green = "#97db7a"
+cyan = "#3ec1c1"
+blue = "#3a76af"
+purple = "#6d378e"
+magenta = "#c942be"
+light = "#afafaf"
+gray = "#474747"
+dark = "#333333"
+dark-green = "#759b66"
