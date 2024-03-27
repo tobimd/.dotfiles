@@ -100,6 +100,7 @@ export EDITOR="/usr/local/bin/nvim"
 export LESSHISTFILE="/dev/null"
 export DOTFILES_HOME="$HOME/.dotfiles"
 export PYTHONSTARTUP="$HOME/.config/python/startup.py"
+export STARSHIP_CONFIG="$HOME/.config/starship/config.toml"
 
 # flutter
 export PUB_CACHE="$HOME/Projects/ipfs_http_rpc/.dart_tool/dart-sdk/cache"
