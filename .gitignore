@@ -22,6 +22,14 @@
 !/.config/nvim
 !/.config/user-dirs.dirs
 !/.config/user-dirs.locale
+!/.config/starship
+!/.config/tmux
+
+/.config/tmux/plugins/*
+!/.config/tmux/plugins/tpm
+
+/.config/starship/*
+!/.config/starship/config.toml
 
 /.config/karabiner/*
 !/.config/karabiner/karabiner.json

@@ -2,6 +2,7 @@
 
 import re
 import sys
+import os
 import argparse as ap
 import dataclasses
 
@@ -11,7 +12,7 @@ re_spaces = re.compile(r"  +", re.M)
 re_aliases = re.compile(r"\[Legendary\.aliases\]\s?(?:\s[^\r\n]+)+", re.M)
 re_sequels = re.compile(r"(^[^\r\n]+)_(\d+)$", re.M)
 
-CONFIG_FILE: str = "/home/tobi/.config/legendary/config.ini"
+CONFIG_FILE: str = os.path.expanduser("~/.config/legendary/config.ini")
 MAX_NAME_LEN: int = 50
 
 
