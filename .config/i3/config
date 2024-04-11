@@ -31,13 +31,14 @@ exec --no-startup-id /home/tobi/.config/utils/scripts/pasystray.sh
 # start network manager system tray
 exec --no-startup-id nm-applet
 
-# set horizontal order of monitors and scale of tv and respective initial workspaces
-set $tv "HDMI-0"
-set $pc "DVI-D-0"
-exec --no-startup-id xrandr --output $tv --mode 1920x1080 --auto
-exec --no-startup-id xrandr --output $pc --auto --right-of HDMI-0
-workspace 2 output $pc
-workspace 1 output $tv
+# setup monitor position & modes
+set $main_monitor "HDMI-0"
+exec --no-startup-id xrandr --output $main_monitor --mode 1920x1080 --auto --primary
+workspace 1 output $main_monitor
+# set $scnd_monitor "HDMI-0"
+# exec --no-startup-id xrandr --output $main_monitor --mode 1920x1080 --auto --primary --right-of $scnd_monitor
+# exec --no-startup-id xrandr --output $scnd_monitor --mode 1360x768 --auto
+# workspace 1 output $scnd_monitor
 
 # allow theme coexistance between gnome and i3
 exec --no-startup-id /usr/libexec/gsd-xsettings
