@@ -6,6 +6,7 @@ if [[ $OSTYPE == "linux-gnu"* ]]; then
 	export ANDROID_USER_HOME="$HOME/apps/android-studio/user"
 	export ANDROID_AVD_HOME="$ANDROID_USER_HOME/avd"
 	export STUDIO_JDK="$HOME/apps/android-studio/jbr"
+	export NVIM_HOME="$HOME/.local/bin/nvim"
 
 	PATH="$PATH:$ANDROID_HOME/emulator"
 	PATH="$PATH:$ANDROID_HOME/platform-tools"
