@@ -21,8 +21,12 @@ if [[ $OSTYPE == "linux-gnu"* ]]; then
 	# bind END key
 	bindkey "^[[F" end-of-line
 
-	# fix vte crash for `tilix`
-	if [ $TILIX_ID ] || [ $VTE_VERSION ]; then
-		source /etc/profile.d/vte.sh
-	fi
+	# # fix vte crash for `tilix`
+	# if [ $TILIX_ID ] || [ $VTE_VERSION ]; then
+	# 	source /etc/profile.d/vte.sh
+	# fi
+  
+  if [[ ! -v TMUX_PANE ]]; then
+    tmux
+  fi
 fi
